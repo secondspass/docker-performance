@@ -242,6 +242,8 @@ def absoluteFilePaths(directory):
 ####
 
 def match(realblob_locations, trace_files):
+    print realblob_locations, trace_files
+
     blob_locations = []
     tTOblobdic = {}
     blobTOtdic = {}
@@ -249,6 +251,8 @@ def match(realblob_locations, trace_files):
     
     for location in realblob_locations:
         absFNames = absoluteFilePaths(location)
+	print "Dir: "+location+" has the following files"
+	print absFNames
         blob_locations.extend(absFNames)
     
     for trace_file in trace_files:
@@ -267,7 +271,7 @@ def match(realblob_locations, trace_files):
                     client = request['http.request.remoteaddr']
             
                     for blob in blob_locations:
-                        uri = request['http.request.uri']
+                        #uri = request['http.request.uri']
                         if uri in tTOblobdic.keys():
                             continue
                         if blob in blobTOtdic.keys():
@@ -275,6 +279,8 @@ def match(realblob_locations, trace_files):
                         
                         tTOblobdic[uri] = blob
                         blobTOtdic[blob] = uri
+
+			size = os.stat(blob).st_size
                 
                         r = {
                             'delay': timestamp, 
@@ -285,10 +291,10 @@ def match(realblob_locations, trace_files):
                             'client': client,
                             'data': blob
                         }
-                        
+                        print r
                         ret.append(r)
                                
-        with open(trace_file+'.big.json') as fp:
+        with open(trace_file+'-realblob.json', 'w') as fp:
             json.dump(ret, fp)      
         
 
@@ -413,11 +419,17 @@ def main():
      
     #NANNAN
     if args.command == 'match':    
-        if 'realblobs' in input['client_info']:
-            if inputs['client_info']['realblobs'] is True:
-                realblob_locations = inputs['client_info']['realblobs']['location_list']
-                match(realblob_locations, trace_files)
-                return
+        if 'realblobs' in inputs['client_info']:
+            #if inputs['client_info']['realblobs'] is True:
+            realblob_locations = inputs['client_info']['realblobs']
+            match(realblob_locations, trace_files)
+            return
+	    #else:
+		#print "please put realblobs!"
+		#return
+	else:
+	    print "please write realblobs in the config files"
+	    return
 
     json_data = get_requests(trace_files, limit_type, limit)
 
