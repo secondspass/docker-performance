@@ -25,29 +25,29 @@ def send_request_get(client, payload):
 def send_warmup_thread(requests, q, registry, generate_random):
     trace = {}
     dxf = DXF(registry, 'test_repo', insecure=True)
-    f = open(str(os.getpid()), 'wb')
-    f.write('\0')
-    f.close()
+#     f = open(str(os.getpid()), 'wb')
+#     f.write('\0')
+#     f.close()
     for request in requests:
         if request['size'] < 0:
             trace[request['uri']] = 'bad'
-        elif not (request['uri'] in trace):
-            with open(str(os.getpid()), 'wb') as f:
-                if generate_random is True:
-                    f.seek(request['size'] - 9)
-                    f.write(str(random.getrandbits(64)))
-                    f.write('\0')
-                else:
-                    f.seek(request['size'] - 1)
-                    f.write('\0')
+#         elif not (request['uri'] in trace):
+#             with open(str(os.getpid()), 'wb') as f:
+#                 if generate_random is True:
+#                     f.seek(request['size'] - 9)
+#                     f.write(str(random.getrandbits(64)))
+#                     f.write('\0')
+#                 else:
+#                     f.seek(request['size'] - 1)
+#                     f.write('\0')
 
         try:
-            dgst = dxf.push_blob(str(os.getpid()))
+            dgst = dxf.push_blob(request['data'])
         except:
             dgst = 'bad'
         print request['uri'], dgst
         trace[request['uri']] = dgst
-    os.remove(str(os.getpid()))
+#     os.remove(str(os.getpid()))
     q.put(trace)
 
 def warmup(data, out_trace, registry, threads, generate_random):
@@ -184,10 +184,13 @@ def get_blobs(data, clients_list, port, out_file):
 
     server.join()
 
+######
+# NANNAN: trace_file+'-realblob.json'
+######
 def get_requests(files, t, limit):
     ret = []
     for filename in files:
-        with open(filename, 'r') as f:
+        with open(filename+'-realblob.json', 'r') as f:
             requests = json.load(f)
     
         for request in requests:
@@ -199,13 +202,15 @@ def get_requests(files, t, limit):
                     timestamp = datetime.datetime.strptime(request['timestamp'], '%Y-%m-%dT%H:%M:%S.%fZ')
                     duration = request['http.request.duration']
                     client = request['http.request.remoteaddr']
+                    blob = request['data']
                     r = {
                         'delay': timestamp, 
                         'uri': uri, 
                         'size': size, 
                         'method': method, 
                         'duration': duration,
-                        'client': client
+                        'client': client,
+                        'data': blob
                     }
                     ret.append(r)
     ret.sort(key= lambda x: x['delay'])
@@ -248,6 +253,7 @@ def match(realblob_locations, trace_files):
     tTOblobdic = {}
     blobTOtdic = {}
     ret = []
+    i = 0
     
     for location in realblob_locations:
         absFNames = absoluteFilePaths(location)
@@ -261,38 +267,49 @@ def match(realblob_locations, trace_files):
             
         for request in requests:
             
-            method = request['http.request.method']
+#             method = request['http.request.method']
             uri = request['http.request.uri']
+            layer_id = uri.rsplit('/', 1)[1]
+            usrname = uri.split('/')[1]
+            repo_name = uri.split('/')[2]
+            
             if (('GET' == method) or ('PUT' == method)) and (('manifest' in uri) or ('blobs' in uri)):
                 size = request['http.response.written']
                 if size > 0:
-                    timestamp = datetime.datetime.strptime(request['timestamp'], '%Y-%m-%dT%H:%M:%S.%fZ')
-                    duration = request['http.request.duration']
-                    client = request['http.request.remoteaddr']
+#                     timestamp = datetime.datetime.strptime(request['timestamp'], '%Y-%m-%dT%H:%M:%S.%fZ')
+#                     duration = request['http.request.duration']
+#                     client = request['http.request.remoteaddr']
             
-                    for blob in blob_locations:
+#                     for blob in blob_locations:
+                    if i < len(blob_locations):
+                        blob = blob_locations[i]
                         #uri = request['http.request.uri']
-                        if uri in tTOblobdic.keys():
+                        if layer_id in tTOblobdic.keys():
                             continue
                         if blob in blobTOtdic.keys():
                             continue
                         
-                        tTOblobdic[uri] = blob
-                        blobTOtdic[blob] = uri
+                        tTOblobdic[layer_id] = blob
+                        blobTOtdic[blob] = layer_id
 
-			size = os.stat(blob).st_size
+                        size = os.stat(blob).st_size
                 
                         r = {
-                            'delay': timestamp, 
-                            'uri': uri, 
-                            'size': size, 
-                            'method': method, 
-                            'duration': duration,
-                            'client': client,
+                            "host": request['host'],
+                            "http.request.duration": request['http.request.duration'],
+                            "http.request.method": request['http.request.method'],
+                            "http.request.remoteaddr": request['http.request.remoteaddr'],
+                            "http.request.uri": request['http.request.uri'],
+                            "http.request.useragent": request['http.request.useragent'],
+                            "http.response.status": request['http.response.status'],
+                            "http.response.written": size,
+                            "id": request['id'],
+                            "timestamp": request['timestamp'],
                             'data': blob
                         }
                         print r
                         ret.append(r)
+                        i += 1
                                
         with open(trace_file+'-realblob.json', 'w') as fp:
             json.dump(ret, fp)      
