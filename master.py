@@ -228,6 +228,70 @@ def get_requests(files, t, limit):
     else:
         return ret
 
+
+def absoluteFilePaths(directory):
+    absFNames = []
+    for dirpath,_,filenames in os.walk(directory):
+        for f in filenames:
+            absFNames.append(os.path.abspath(os.path.join(dirpath, f)))
+            
+    return absFNames
+
+####
+# Random match
+####
+
+def match(realblob_locations, trace_files):
+    blob_locations = []
+    tTOblobdic = {}
+    blobTOtdic = {}
+    ret = []
+    
+    for location in realblob_locations:
+        absFNames = absoluteFilePaths(location)
+        blob_locations.extend(absFNames)
+    
+    for trace_file in trace_files:
+        with open(trace_file, 'r') as f:
+            requests = json.load(f)
+            
+        for request in requests:
+            
+            method = request['http.request.method']
+            uri = request['http.request.uri']
+            if (('GET' == method) or ('PUT' == method)) and (('manifest' in uri) or ('blobs' in uri)):
+                size = request['http.response.written']
+                if size > 0:
+                    timestamp = datetime.datetime.strptime(request['timestamp'], '%Y-%m-%dT%H:%M:%S.%fZ')
+                    duration = request['http.request.duration']
+                    client = request['http.request.remoteaddr']
+            
+                    for blob in blob_locations:
+                        uri = request['http.request.uri']
+                        if uri in tTOblobdic.keys():
+                            continue
+                        if blob in blobTOtdic.keys():
+                            continue
+                        
+                        tTOblobdic[uri] = blob
+                        blobTOtdic[blob] = uri
+                
+                        r = {
+                            'delay': timestamp, 
+                            'uri': uri, 
+                            'size': size, 
+                            'method': method, 
+                            'duration': duration,
+                            'client': client,
+                            'data': blob
+                        }
+                        
+                        ret.append(r)
+                               
+        with open(trace_file+'.big.json') as fp:
+            json.dump(ret, fp)      
+        
+
 def organize(requests, out_trace, numclients, client_threads, port, wait, registries, round_robin, push_rand):
     organized = []
 
@@ -346,6 +410,14 @@ def main():
     registries = []
     if 'registry' in inputs:
         registries.extend(inputs['registry'])
+     
+    #NANNAN
+    if args.command == 'match':    
+        if 'realblobs' in input['client_info']:
+            if inputs['client_info']['realblobs'] is True:
+                realblob_locations = inputs['client_info']['realblobs']['location_list']
+                match(realblob_locations, trace_files)
+                return
 
     json_data = get_requests(trace_files, limit_type, limit)
 

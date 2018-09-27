@@ -8,6 +8,11 @@ client_info: # Required for run command
     threads: 100 # number of threads per client node, each thread is a process that sends requests
     wait: true # Determines if clients should wait the relative amount of time in trace before sending request
     route: true # Tells the master to forward based on hashing on client urls rather than round robin
+    
+    realblobs: # NANNAN: add real blobs
+        location_list:
+          - /home/nannan/dockerimages/layers/layers_less_50m/hulk1_layers_less_50m
+          - /home/nannan/dockerimages/layers/layers_less_50m/hulk4_layers_less_50m
 
 verbose: true # optional input
 
