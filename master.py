@@ -267,8 +267,10 @@ def match(realblob_locations, trace_files):
             
         for request in requests:
             
-#             method = request['http.request.method']
+            method = request['http.request.method']
             uri = request['http.request.uri']
+	    if len(uri.split('/')) < 3:
+		continue
             layer_id = uri.rsplit('/', 1)[1]
             usrname = uri.split('/')[1]
             repo_name = uri.split('/')[2]
