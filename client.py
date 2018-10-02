@@ -64,7 +64,7 @@ def send_requests(registry, wait, push_rand, requests, startTime, q):
 
         reg = (reg + 1) % len(registry)
         results.append({'time': now, 'duration': t, 'onTime': onTime, 'size': size})
-    os.remove(fname)
+#     os.remove(fname)
     q.put(results)
 
 def get_messages(q):
