@@ -95,7 +95,8 @@ def stats(responses):
     failed = 0
     startTime = responses[0]['time']
     for r in responses:
-        if r['onTime'] == 'failed':
+#         if r['onTime'] == 'failed':
+        if "failed" in r['onTime']:
             total -= 1
             failed += 1
             continue
@@ -334,6 +335,7 @@ def organize(requests, out_trace, numclients, client_threads, port, wait, regist
         request = {
             'delay': r['delay'],
             'duration': r['duration'],
+            'data': r['data']
         }
         if r['uri'] in blob:
             b = blob[r['uri']]

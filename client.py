@@ -17,9 +17,9 @@ def send_requests(registry, wait, push_rand, requests, startTime, q):
     for reg in registry:
         dxf.append(DXF(reg, 'test_repo', insecure=True))
     results = []
-    fname = str(os.getpid())
-    f = open(fname, 'wb')
-    f.close()
+#     fname = str(os.getpid())
+#     f = open(fname, 'wb')
+#     f.close()
     for r in requests:
         size = 0
         t = 0
@@ -36,29 +36,29 @@ def send_requests(registry, wait, push_rand, requests, startTime, q):
             try:
                 for chunk in dxf[reg].pull_blob(r['blob'], chunk_size=1024*1024):
                     size += len(chunk)
-            except:
-                onTime = 'failed'
+            except Exception as e:
+                onTime = 'failed: '+str(e)
             t = time.time() - t
         else:
 #            print fname + ' push'
             size = r['size']
             if size > 0:
-                with open(fname, 'wb') as f:
-                    if push_rand is True:
-                        f.seek(size - 9)
-                        f.write(str(random.getrandbits(64)))
-                    else:
-                        f.seek(size - 1)
-                    f.write('\0')
+#                 with open(fname, 'wb') as f:
+#                     if push_rand is True:
+#                         f.seek(size - 9)
+#                         f.write(str(random.getrandbits(64)))
+#                     else:
+#                         f.seek(size - 1)
+#                     f.write('\0')
                 now = time.time()
                 if start > now and wait is True:
                     time.sleep(start - now)
                 now = time.time()
                 reg = random.randrange(0, len(registry))
                 try:
-                    dgst = dxf[reg].push_blob(fname)
-                except:
-                    onTime = 'failed'
+                    dgst = dxf[reg].push_blob(r['data'])#fname
+                except Exception as e:
+                    onTime = 'failed: '+str(e)
 
                 t = time.time() - now
 
