@@ -37,7 +37,10 @@ def send_requests(registry, wait, push_rand, requests, startTime, q):
                 for chunk in dxf[reg].pull_blob(r['blob'], chunk_size=1024*1024):
                     size += len(chunk)
             except Exception as e:
-                onTime = 'failed: '+str(e)
+                if "expected digest sha256:" in str(e):
+                    onTime = 'yes: wrong digest'
+                else:
+                    onTime = 'failed: '+str(e)
             t = time.time() - t
         else:
 #            print fname + ' push'
@@ -58,7 +61,11 @@ def send_requests(registry, wait, push_rand, requests, startTime, q):
                 try:
                     dgst = dxf[reg].push_blob(r['data'])#fname
                 except Exception as e:
-                    onTime = 'failed: '+str(e)
+#                     onTime = 'failed: '+str(e)
+                    if "expected digest sha256:" in str(e):
+                        onTime = 'yes: wrong digest'
+                    else:
+                        onTime = 'failed: '+str(e)
 
                 t = time.time() - now
 

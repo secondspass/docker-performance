@@ -93,6 +93,7 @@ def stats(responses):
     total = len(responses)
     onTimes = 0
     failed = 0
+    wrongdigest = 0
     startTime = responses[0]['time']
     for r in responses:
 #         if r['onTime'] == 'failed':
@@ -106,10 +107,14 @@ def stats(responses):
         data += r['size']
         if r['onTime'] == 'yes':
             onTimes += 1
+        if r['onTime'] == 'yes: wrong digest':
+            wrongdigest += 1
+            
     duration = endtime - startTime
     print 'Statistics'
     print 'Successful Requests: ' + str(total)
     print 'Failed Requests: ' + str(failed)
+    print 'Wrong digest requests: '+str(wrongdigest)
     print 'Duration: ' + str(duration)
     print 'Data Transfered: ' + str(data) + ' bytes'
     print 'Average Latency: ' + str(latency / total)
