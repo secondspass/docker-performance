@@ -14,6 +14,7 @@ from dxf import *
 from multiprocessing import Process, Queue
 import importlib
 import hash_ring
+from collections import defaultdict
 
 input_dir = '/home/nannan/dockerimages/docker-traces/data_centers/'
 
@@ -259,16 +260,16 @@ def get_requests(trace_dir):
     absFNames = absoluteFilePaths(trace_dir)
 
     blob_locations = []
-    tTOblobdic = {}
-    blobTOtdic = {}
+#     tTOblobdic = {}
+#     blobTOtdic = {}
     ret = []
-    i = 0
+#     i = 0
     
 #     for location in realblob_locations:
 #         absFNames = absoluteFilePaths(location)
-	print "Dir: "+trace_dir+" has the following files"
-	print absFNames
-        blob_locations.extend(absFNames)
+    print "Dir: "+trace_dir+" has the following files"
+    print absFNames
+    blob_locations.extend(absFNames)
     
     for trace_file in blob_locations:
         with open(trace_file, 'r') as f:
@@ -279,10 +280,7 @@ def get_requests(trace_dir):
             method = request['http.request.method']
             uri = request['http.request.uri']
     	    if len(uri.split('/')) < 3:
-    		continue
-            layer_id = uri.rsplit('/', 1)[1]
-            usrname = uri.split('/')[1]
-            repo_name = uri.split('/')[2]
+                continue
             # ignore othrs reqs, because using push and pull reqs.
             if (('GET' == method) or ('PUT' == method)) and (('manifest' in uri) or ('blobs' in uri)):
                 size = request['http.response.written']
@@ -315,57 +313,101 @@ def get_requests(trace_dir):
                             "http.response.status": request['http.response.status'],
                             "http.response.written": size,
                             "id": request['id'],
-                            "timestamp": request['timestamp'],
+                            "timestamp": request['timestamp']
 #                             'data': blob
                         }
                         print r
                         ret.append(r)
 #                         i += 1
 #     return ret 
-        ret.sort(key= lambda x: x['timestamp'])                          
-        with open(trace_file+'-realblob.json', 'w') as fp:
-            json.dump(ret, fp)      
+    ret.sort(key= lambda x: x['timestamp'])                          
+    with open(trace_file+'-total.json', 'w') as fp:
+        json.dump(ret, fp)      
         
 
-def organize(requests, out_trace, numclients, client_threads, port, wait, registries, round_robin, push_rand):
+def analyze_requests(total_trace):
     organized = []
+    layerTOtimedic = defaultdict(list)
+    
+    layer1stPUT = -1
+    
+#     start = ()
 
-    if round_robin is False:
-        ring = hash_ring.HashRing(range(numclients))
-    with open(out_trace, 'r') as f:
+#     if round_robin is False:
+#         ring = hash_ring.HashRing(range(numclients))
+    with open(total_trace, 'r') as f:
         blob = json.load(f)
 
-    for i in range(numclients):
-        organized.append([{'port': port, 'id': random.getrandbits(32), 'threads': client_threads, 'wait': wait, 'registry': registries, 'random': push_rand}])
-        print organized[-1][0]['id']
-    i = 0
+#     for i in range(numclients):
+#         organized.append([{'port': port, 'id': random.getrandbits(32), 'threads': client_threads, 'wait': wait, 'registry': registries, 'random': push_rand}])
+#         print organized[-1][0]['id']
+#     i = 0
 
-    for r in requests:
-        request = {
-            'delay': r['delay'],
-            'duration': r['duration'],
-            'data': r['data']
-        }
-        if r['uri'] in blob:
-            b = blob[r['uri']]
-            if b != 'bad':
-                request['blob'] = b
-                request['method'] = 'GET'
-                if round_robin is True:
-                    organized[i % numclients].append(request)
-                    i += 1
-                else:
-                    organized[ring.get_node(r['client'])].append(request)
-        else:
-            request['size'] = r['size']
-            request['method'] = 'PUT'
-            if round_robin is True:
-                organized[i % numclients].append(request)
-                i += 1
-            else:
-                organized[ring.get_node(r['client'])].append(request)
+    for r in blob:
+        uri = r['http.request.uri']
+        layer_id = uri.rsplit('/', 1)[1]
+        usrname = uri.split('/')[1]
+        repo_name = uri.split('/')[2]
+#         timestamp = r['timestamp']
+        timestamp = datetime.datetime.strptime(r['timestamp'], '%Y-%m-%dT%H:%M:%S.%fZ')
+        method = request['http.request.method']
+        
+        print "layer_id: "+layer_id
+        print "repo_name: "+repo_name
+        print "usrname: "+usrname
+        
+#         if layer_id in layerTOtimedic.keys():
+        layerTOtimedic[layer_id].append((method, timestamp))
+        
+    with open(trace_file+'-layer_access.json', 'w') as fp:
+        json.dump(layerTOtimedic, fp)
+        
+#     for k in sorted(layerTOtimedic, key=lambda k: len(layerTOtimedic[k]), reversed=True):
+#         
+#         lifetime = layerTOtimedic[k][len(layerTOtimedic[k][0])-1][1] - layerTOtimedic[k][0][1]
+#         lifetime = datetime.timedelta(seconds=24*60*60).total_seconds()
+        
+#         lst = layerTOtimedic[k]
+#         
+#         for i in len(lst):
+#             if -1 == layer1stPUT:
+#                 if lst[i][0] == 'PUT':
+#                     layer1stPUT = i
+# #             else:
+#                 
+#                 
+#         
+#         tub = (k, lifetime)
+#         else:
+            
+#                             continue
+#         request = {
+#             'delay': r['delay'],
+#             'duration': r['duration'],
+#             'data': r['data']
+#         }
 
-    return organized
+    
+#         if r['uri'] in blob:
+#             b = blob[r['uri']]
+#             if b != 'bad':
+#                 request['blob'] = b
+#                 request['method'] = 'GET'
+#                 if round_robin is True:
+#                     organized[i % numclients].append(request)
+#                     i += 1
+#                 else:
+#                     organized[ring.get_node(r['client'])].append(request)
+#         else:
+#             request['size'] = r['size']
+#             request['method'] = 'PUT'
+#             if round_robin is True:
+#                 organized[i % numclients].append(request)
+#                 i += 1
+#             else:
+#                 organized[ring.get_node(r['client'])].append(request)
+
+#     return layerTOtimedic
 
 
 def main():
@@ -459,7 +501,7 @@ def main():
 	    #else:
 		#print "please put realblobs!"
 		#return
-    selse:
+    else:
 	    print "wrong cmd!"
 	    return
 
