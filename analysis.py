@@ -492,7 +492,7 @@ def main():
 #         registries.extend(inputs['registry'])
      
     #NANNAN
-    if args.command == 'analysis':    
+    if args.command == 'get':    
 #         if 'realblobs' in inputs['client_info']:
             #if inputs['client_info']['realblobs'] is True:
 #             realblob_locations = inputs['client_info']['realblobs']
@@ -501,10 +501,12 @@ def main():
 	    #else:
 		#print "please put realblobs!"
 		#return
+    elif args.command == 'Alayer':
+#         print "wrong cmd!"
+        analyze_requests(os.path.join(input_dir, 'total_trace.json'))
+        return 
     else:
-	    print "wrong cmd!"
-	    return
-    analyze_requests(os.path.join(input_dir, 'total_trace.json'))
+        return
 
 #     json_data = get_requests(trace_files, limit_type, limit)
 # 
