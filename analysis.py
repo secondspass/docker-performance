@@ -348,9 +348,9 @@ def analyze_requests(total_trace):
         layer_id = uri.rsplit('/', 1)[1]
         usrname = uri.split('/')[1]
         repo_name = uri.split('/')[2]
-#         timestamp = r['timestamp']
-        timestamp = datetime.datetime.strptime(r['timestamp'], '%Y-%m-%dT%H:%M:%S.%fZ')
-        method = request['http.request.method']
+        timestamp = r['timestamp']
+#        timestamp = datetime.datetime.strptime(r['timestamp'], '%Y-%m-%dT%H:%M:%S.%fZ')
+        method = r['http.request.method']
         
         print "layer_id: "+layer_id
         print "repo_name: "+repo_name
@@ -359,7 +359,7 @@ def analyze_requests(total_trace):
 #         if layer_id in layerTOtimedic.keys():
         layerTOtimedic[layer_id].append((method, timestamp))
         
-    with open(os.path.join(input_dir, 'layer_access.json')) as fp:
+    with open(os.path.join(input_dir, 'layer_access.json'), 'w') as fp:
         json.dump(layerTOtimedic, fp)
         
 #     for k in sorted(layerTOtimedic, key=lambda k: len(layerTOtimedic[k]), reversed=True):
