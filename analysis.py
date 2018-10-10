@@ -321,7 +321,7 @@ def get_requests(trace_dir):
 #                         i += 1
 #     return ret 
     ret.sort(key= lambda x: x['timestamp'])                          
-    with open(trace_file+'-total.json', 'w') as fp:
+    with open(os.path.join(input_dir, 'total_trace.json'), 'w') as fp:
         json.dump(ret, fp)      
         
 
@@ -359,7 +359,7 @@ def analyze_requests(total_trace):
 #         if layer_id in layerTOtimedic.keys():
         layerTOtimedic[layer_id].append((method, timestamp))
         
-    with open(trace_file+'-layer_access.json', 'w') as fp:
+    with open(os.path.join(input_dir, 'layer_access.json')) as fp:
         json.dump(layerTOtimedic, fp)
         
 #     for k in sorted(layerTOtimedic, key=lambda k: len(layerTOtimedic[k]), reversed=True):
@@ -504,6 +504,7 @@ def main():
     else:
 	    print "wrong cmd!"
 	    return
+    analyze_requests(os.path.join(input_dir, 'total_trace.json'))
 
 #     json_data = get_requests(trace_files, limit_type, limit)
 # 
