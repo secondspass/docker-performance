@@ -345,19 +345,21 @@ def analyze_requests(total_trace):
 
     for r in blob:
         uri = r['http.request.uri']
-        layer_id = uri.rsplit('/', 1)[1]
         usrname = uri.split('/')[1]
         repo_name = uri.split('/')[2]
-        timestamp = r['timestamp']
-#        timestamp = datetime.datetime.strptime(r['timestamp'], '%Y-%m-%dT%H:%M:%S.%fZ')
-        method = r['http.request.method']
         
-        print "layer_id: "+layer_id
-        print "repo_name: "+repo_name
-        print "usrname: "+usrname
+        if 'blob' in uri:
+            layer_id = uri.rsplit('/', 1)[1]
+            timestamp = r['timestamp']
+    #        timestamp = datetime.datetime.strptime(r['timestamp'], '%Y-%m-%dT%H:%M:%S.%fZ')
+            method = r['http.request.method']
         
-#         if layer_id in layerTOtimedic.keys():
-        layerTOtimedic[layer_id].append((method, timestamp))
+            print "layer_id: "+layer_id
+            print "repo_name: "+repo_name
+            print "usrname: "+usrname
+            
+    #         if layer_id in layerTOtimedic.keys():
+            layerTOtimedic[layer_id].append((method, timestamp))
         
     with open(os.path.join(input_dir, 'layer_access.json'), 'w') as fp:
         json.dump(layerTOtimedic, fp)
