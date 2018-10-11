@@ -325,11 +325,70 @@ def get_requests(trace_dir):
         json.dump(ret, fp)      
         
 
+def analyze_layerlifetime():
+    
+    layerPUTGAcctimedic = defaultdict(list)
+    layerNPUTGAcctimedic = defaultdict(list)
+    layerNGETAcctimedic = {}
+    
+    layer1stPUT = -1
+#     layer1stGET = -1
+    layerNPUT = False
+    layerNGET = False
+#     layecntGET = 0
+    
+    with open(os.path.join(input_dir, 'layer_access.json')) as fp:
+        layerTOtimedic = json.load(fp)
+
+    for k in sorted(layerTOtimedic, key=lambda k: len(layerTOtimedic[k]), reversed=True):
+         
+        lifetime = layerTOtimedic[k][len(layerTOtimedic[k][0])-1][1] - layerTOtimedic[k][0][1]
+        lifetime = lifetime.total_seconds()
+           
+        lst = layerTOtimedic[k]
+        
+        if 'PUT' == lst[0][0]:
+            layer1stPUT = 0
+            if len(lst) == 1:
+                layerNGET = True
+        else:
+            layerNPUT = True
+            
+        if False == layerNGET:
+            layerNGETAcctimedic[k] = True
+            continue
+        
+        interaccess = ((),)
+        #interaccess = interaccess + (k,)
+        # (digest, next pull time)
+        
+        for i in len(lst)-2:
+            nowtime = lst[i][1]
+            nexttime = lst[i+1][1]
+            delta = nexttime - nowtime
+            delta = delta.total_seconds()
+            
+            interaccess = interaccess + (delta,)                   
+                    
+        if -1 == layer1stPUT:
+            layerNPUTGAcctimedic[k] = interaccess
+        else:
+            layerPUTGAcctimedic[k] = interaccess
+
+    if layerNGETAcctimedic:
+        with open(os.path.join(input_dir, 'layerNGETAcctime.json'), 'w') as fp:
+            json.dump(layerNGETAcctimedic, fp)
+    if layerNPUTGAcctimedic:
+        with open(os.path.join(input_dir, 'layerNPUTAcctime.json'), 'w') as fp:
+            json.dump(layerNPUTGAcctimedic, fp)
+    if layerPUTGAcctimedic:
+         with open(os.path.join(input_dir, 'layerPUTGAcctime.json'), 'w') as fp:
+             json.dump(layerPUTGAcctimedic, fp)
+
+
 def analyze_requests(total_trace):
     organized = []
     layerTOtimedic = defaultdict(list)
-    
-    layer1stPUT = -1
     
 #     start = ()
 
@@ -364,22 +423,18 @@ def analyze_requests(total_trace):
     with open(os.path.join(input_dir, 'layer_access.json'), 'w') as fp:
         json.dump(layerTOtimedic, fp)
         
-#     for k in sorted(layerTOtimedic, key=lambda k: len(layerTOtimedic[k]), reversed=True):
-#         
-#         lifetime = layerTOtimedic[k][len(layerTOtimedic[k][0])-1][1] - layerTOtimedic[k][0][1]
-#         lifetime = datetime.timedelta(seconds=24*60*60).total_seconds()
-        
-#         lst = layerTOtimedic[k]
-#         
-#         for i in len(lst):
-#             if -1 == layer1stPUT:
-#                 if lst[i][0] == 'PUT':
-#                     layer1stPUT = i
-# #             else:
+
+            
+            
+                       
+                    
+# tub = (k, lifetime)      
+            
+#             else:
 #                 
 #                 
 #         
-#         tub = (k, lifetime)
+#         
 #         else:
             
 #                             continue
@@ -507,6 +562,9 @@ def main():
 #         print "wrong cmd!"
         analyze_requests(os.path.join(input_dir, 'total_trace.json'))
         return 
+    elif args.command == 'layerlifetime':
+        analyze_layerlifetime()
+        return
     else:
         return
 
