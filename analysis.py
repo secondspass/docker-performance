@@ -424,7 +424,48 @@ def analyze_requests(total_trace):
         json.dump(layerTOtimedic, fp)
         
 
+def analyze_repo_reqs(total_trace):
+    organized = []
+    usrTOrepoTOlayerdic = defaultdict(list) # repoTOlayerdic
+    repoTOlayerdic = defaultdict(list)
+    
+#     start = ()
+
+#     if round_robin is False:
+#         ring = hash_ring.HashRing(range(numclients))
+    with open(total_trace, 'r') as f:
+        blob = json.load(f)
+
+#     for i in range(numclients):
+#         organized.append([{'port': port, 'id': random.getrandbits(32), 'threads': client_threads, 'wait': wait, 'registry': registries, 'random': push_rand}])
+#         print organized[-1][0]['id']
+#     i = 0
+
+    # get usr -> repo -> layer map
+
+    for r in blob:
+        uri = r['http.request.uri']
+        usrname = uri.split('/')[1]
+        repo_name = uri.split('/')[2]
+        
+        if 'blob' in uri:
+            layer_id = uri.rsplit('/', 1)[1]
+            timestamp = r['timestamp']
+    #        timestamp = datetime.datetime.strptime(r['timestamp'], '%Y-%m-%dT%H:%M:%S.%fZ')
+            method = r['http.request.method']
+        
+            print "layer_id: "+layer_id
+            print "repo_name: "+repo_name
+            print "usrname: "+usrname
             
+    #         if layer_id in layerTOtimedic.keys():
+            #layerTOtimedic[layer_id].append((method, timestamp))
+            repoTOlayerdic[repo_name].append(layer_id)
+            usrTOrepoTOlayerdic[usrname].append(repoTOlayerdic[repo_name])
+        
+    with open(os.path.join(input_dir, 'usr2repo2layer_map.json'), 'w') as fp:
+        json.dump(layerTOtimedic, fp)
+           
             
                        
                     
@@ -564,6 +605,9 @@ def main():
         return 
     elif args.command == 'layerlifetime':
         analyze_layerlifetime()
+        return
+    elif args.command == 'map':
+        analyze_repo_reqs(os.path.join(input_dir, 'total_trace.json'))
         return
     else:
         return
