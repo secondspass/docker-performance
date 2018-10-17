@@ -340,10 +340,10 @@ def analyze_layerlifetime():
     with open(os.path.join(input_dir, 'layer_access.json')) as fp:
         layerTOtimedic = json.load(fp)
 
-    for k in sorted(layerTOtimedic, key=lambda k: len(layerTOtimedic[k]), reversed=True):
+    for k in sorted(layerTOtimedic, key=lambda k: len(layerTOtimedic[k]), reverse=True):
          
-        lifetime = layerTOtimedic[k][len(layerTOtimedic[k][0])-1][1] - layerTOtimedic[k][0][1]
-        lifetime = lifetime.total_seconds()
+        #lifetime = layerTOtimedic[k][len(layerTOtimedic[k][0])-1][1] - layerTOtimedic[k][0][1]
+        #lifetime = lifetime.total_seconds()
            
         lst = layerTOtimedic[k]
         
@@ -354,7 +354,7 @@ def analyze_layerlifetime():
         else:
             layerNPUT = True
             
-        if False == layerNGET:
+        if True == layerNGET:
             layerNGETAcctimedic[k] = True
             continue
         
@@ -362,9 +362,9 @@ def analyze_layerlifetime():
         #interaccess = interaccess + (k,)
         # (digest, next pull time)
         
-        for i in len(lst)-2:
-            nowtime = lst[i][1]
-            nexttime = lst[i+1][1]
+        for i in range(len(lst)-1):
+            nowtime = datetime.datetime.strptime(lst[i][1], '%Y-%m-%dT%H:%M:%S.%fZ')#lst[i][1]
+            nexttime = datetime.datetime.strptime(lst[i+1][1], '%Y-%m-%dT%H:%M:%S.%fZ')#lst[i+1][1]
             delta = nexttime - nowtime
             delta = delta.total_seconds()
             
