@@ -546,7 +546,7 @@ def analyze_usr_repolifetime():
     NlayerNPUTGAcctimedic = 0
     NlayerNGETAcctimedic = 0
     
-    repoTOlayerdic = defaultdict(list)
+    repoTOlayerdic = {} #defaultdict(list)
     
 #     userTOlayerdic = defaultdict(list)
 
@@ -564,58 +564,61 @@ def analyze_usr_repolifetime():
 #         repoTONPUTAlayerdic = defaultdict(list)
 #         repoTONGETAlayerdic = defaultdict(list)
         
-        for repo in usrrepolayer_map[usr]:            
-            if repo in repoTOlayerdic.keys():
-                continue
+        for repo_item in usrrepolayer_map[usr]:  
+            for repo, layers in repo_item.items():                          
+                if repo in repoTOlayerdic.keys():
+                    continue
             
-            repoTOPUTGAlayerdic = defaultdict(list) # repoTOlayerdic
-            repoTONPUTAlayerdic = defaultdict(list)
-            repoTONGETAlayerdic = defaultdict(list)
+                repoTOPUTGAlayerdic = defaultdict(list) # repoTOlayerdic
+                repoTONPUTAlayerdic = defaultdict(list)
+                repoTONGETAlayerdic = defaultdict(list)
+                
+                repodic = defaultdict(list)
             
-            repodic = defaultdict(list)
-            
-            for layer in repo.keys():
-                try:
-                    lst = layerPUTGAcctimedic[layer]
-                except Exception as e:
-                    print "not put - get layer"
-                    
-                    NlayerPUTGAcctimedic = 1
-                    
+                for layer in layers:#repo.keys():
                     try:
-                        lst = layerNPUTGAcctimedic[layer]
+                        lst = layerPUTGAcctimedic[layer]
                     except Exception as e:
-                        print "not nput - get layer"
+                        print "not put - get layer"
                         
-                        NlayerNPUTGAcctimedic = 1
+                        NlayerPUTGAcctimedic = 1
                         
                         try:
-                            lst = layerNGETAcctimedic[layer]
+                            lst = layerNPUTGAcctimedic[layer]
                         except Exception as e:
-                            print "not nget layer"
+                            print "not nput - get layer"
                             
-                            NlayerNGETAcctimedic = 1
-                
-                if NlayerPUTGAcctimedic and NlayerNPUTGAcctimedic and NlayerNGETAcctimedic:
-                    print "this is not a legal layer"
-                    continue
-                elif (NlayerPUTGAcctimedic == 0) and (NlayerNPUTGAcctimedic == 0) and (NlayerNGETAcctimedic == 0):
-                    print "this is not a layer"
-                    continue
-                elif NlayerPUTGAcctimedic == 0:
-                    """this is a layerNPUTGAcctimedic"""
-                    repoTOPUTGAlayerdic[layer].append(lst)
-                    repodic['repoTOPUTGAlayerdic'].append({layer: repoTOPUTGAlayerdic[layer]}) 
-                elif NlayerNPUTGAcctimedic == 0:
-                    repoTONPUTAlayerdic[layer].append(lst)
-                    repodic['repoTONPUTAlayerdic'].append({layer: repoTONPUTAlayerdic[layer]})
-                elif NlayerNGETAcctimedic == 0:
-                    repoTONGETAlayerdic[layer].append(lst)
-                    repodic['repoTONGETAlayerdic'].append({layer: repoTONGETAlayerdic[layer]})
+                            NlayerNPUTGAcctimedic = 1
+                            
+                            try:
+                                lst = layerNGETAcctimedic[layer]
+                            except Exception as e:
+                                print "not nget layer"
+                                
+                                NlayerNGETAcctimedic = 1
+                    
+                    if NlayerPUTGAcctimedic and NlayerNPUTGAcctimedic and NlayerNGETAcctimedic:
+                        print "this is not a legal layer"
+                        continue
+                    elif (NlayerPUTGAcctimedic == 0) and (NlayerNPUTGAcctimedic == 0) and (NlayerNGETAcctimedic == 0):
+                        print "this is not a layer"
+                        continue
+                    elif NlayerPUTGAcctimedic == 0:
+                        """this is a layerNPUTGAcctimedic"""
+                        repoTOPUTGAlayerdic[layer].append(lst)
+                        repodic['repoTOPUTGAlayerdic'].append({layer: repoTOPUTGAlayerdic[layer]}) 
+                    elif NlayerNPUTGAcctimedic == 0:
+                        repoTONPUTAlayerdic[layer].append(lst)
+                        repodic['repoTONPUTAlayerdic'].append({layer: repoTONPUTAlayerdic[layer]})
+                    elif NlayerNGETAcctimedic == 0:
+                        repoTONGETAlayerdic[layer].append(lst)
+                        repodic['repoTONGETAlayerdic'].append({layer: repoTONGETAlayerdic[layer]})
+                        
+            repoTOlayerdic[repo] = repodic
         
-            repoTOlayerdic[repo]['repoTOPUTGAlayerdic'] =  repodic['repoTOPUTGAlayerdic']
-            repoTOlayerdic[repo]['repoTONPUTAlayerdic'] =  repodic['repoTONPUTAlayerdic']
-            repoTOlayerdic[repo]['repoTONGETAlayerdic'] =  repodic['repoTONGETAlayerdic']
+#             repoTOlayerdic[repo]['repoTOPUTGAlayerdic'] =  repodic['repoTOPUTGAlayerdic']
+#             repoTOlayerdic[repo]['repoTONPUTAlayerdic'] =  repodic['repoTONPUTAlayerdic']
+#             repoTOlayerdic[repo]['repoTONGETAlayerdic'] =  repodic['repoTONGETAlayerdic']
             
     with open(os.path.join(input_dir, 'repo2layersaccesstime.json'), 'w') as fp:
         json.dump(repoTOlayerdic, fp)           
