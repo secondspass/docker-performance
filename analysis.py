@@ -550,13 +550,13 @@ def analyze_usr_repolifetime():
     
 #     userTOlayerdic = defaultdict(list)
 
-    with open(os.path.join(input_dir, 'layerNGETAcctime.json'), 'w') as fp:
+    with open(os.path.join(input_dir, 'layerNGETAcctime.json'), 'r') as fp:
         layerNGETAcctimedic = json.load(fp)
 #     if layerNPUTGAcctimedic:
-    with open(os.path.join(input_dir, 'layerNPUTAcctime.json'), 'w') as fp:
+    with open(os.path.join(input_dir, 'layerNPUTAcctime.json'), 'r') as fp:
         layerNPUTGAcctimedic = json.load(fp)
 #     if layerPUTGAcctimedic:
-    with open(os.path.join(input_dir, 'layerPUTGAcctime.json'), 'w') as fp:
+    with open(os.path.join(input_dir, 'layerPUTGAcctime.json'), 'r') as fp:
          layerPUTGAcctimedic = json.load(fp)
          
     for usr in usrrepolayer_map.keys():        
