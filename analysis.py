@@ -605,15 +605,18 @@ def analyze_usr_repolifetime():
                 elif NlayerPUTGAcctimedic == 0:
                     """this is a layerNPUTGAcctimedic"""
                     repoTOPUTGAlayerdic[layer].append(lst)
-                    repodic[repoTOPUTGAlayerdic].append({layer: repoTOPUTGAlayerdic[layer]}) 
+                    repodic['repoTOPUTGAlayerdic'].append({layer: repoTOPUTGAlayerdic[layer]}) 
                 elif NlayerNPUTGAcctimedic == 0:
                     repoTONPUTAlayerdic[layer].append(lst)
-                    repodic[repoTONPUTAlayerdic].append({layer: repoTONPUTAlayerdic[layer]})
+                    repodic['repoTONPUTAlayerdic'].append({layer: repoTONPUTAlayerdic[layer]})
                 elif NlayerNGETAcctimedic == 0:
                     repoTONGETAlayerdic[layer].append(lst)
-                    repodic[repoTONGETAlayerdic].append({layer: repoTONGETAlayerdic[layer]})
+                    repodic['repoTONGETAlayerdic'].append({layer: repoTONGETAlayerdic[layer]})
         
-            repoTOlayerdic[repo].append(repodic)     
+            repoTOlayerdic[repo]['repoTOPUTGAlayerdic'] =  repodic['repoTOPUTGAlayerdic']
+            repoTOlayerdic[repo]['repoTONPUTAlayerdic'] =  repodic['repoTONPUTAlayerdic']
+            repoTOlayerdic[repo]['repoTONGETAlayerdic'] =  repodic['repoTONGETAlayerdic']
+            
     with open(os.path.join(input_dir, 'repo2layersaccesstime.json'), 'w') as fp:
         json.dump(repoTOlayerdic, fp)           
                     
