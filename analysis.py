@@ -564,7 +564,7 @@ def analyze_usr_repolifetime():
 #         repoTONPUTAlayerdic = defaultdict(list)
 #         repoTONGETAlayerdic = defaultdict(list)
         
-        for repo in usrrepolayer_map[k]:            
+        for repo in usrrepolayer_map[usr]:            
             if repo in repoTOlayerdic.keys():
                 continue
             
