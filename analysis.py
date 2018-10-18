@@ -464,7 +464,7 @@ def analyze_repo_reqs(total_trace):
             usrTOrepoTOlayerdic[usrname].append(repoTOlayerdic[repo_name])
         
     with open(os.path.join(input_dir, 'usr2repo2layer_map.json'), 'w') as fp:
-        json.dump(layerTOtimedic, fp)
+        json.dump(usrTOrepoTOlayerdic, fp)
            
             
                        
