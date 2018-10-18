@@ -425,9 +425,10 @@ def analyze_requests(total_trace):
         
 
 def analyze_repo_reqs(total_trace):
-    organized = []
+#     organized = []
     usrTOrepoTOlayerdic = defaultdict(list) # repoTOlayerdic
     repoTOlayerdic = defaultdict(list)
+    usrTOrepodic = defaultdict(list) # repoTOlayerdic
     
 #     start = ()
 
@@ -458,17 +459,142 @@ def analyze_repo_reqs(total_trace):
             print "repo_name: "+repo_name
             print "usrname: "+usrname
             
+            try:
+                lst = repoTOlayerdic[repo_name]
+                if layer_id not in lst:
+                    repoTOlayerdic[repo_name].append(layer_id)
+            except Exception as e:
+                print "repo has not this layer before"
+                repoTOlayerdic[repo_name].append(layer_id)
+                
+            try:
+                lst = usrTOrepodic[usrname]
+                if repo_name not in lst:
+                    usrTOrepodic[usrname].append(repo_name)
+            except Exception as e:
+                print "usrname has not this repo before"
+                usrTOrepodic[usrname].append(repo_name)
+#             if layer_id
+            
     #         if layer_id in layerTOtimedic.keys():
             #layerTOtimedic[layer_id].append((method, timestamp))
-            repoTOlayerdic[repo_name].append(layer_id)
-            usrTOrepoTOlayerdic[usrname].append(repoTOlayerdic[repo_name])
+#             repoTOlayerdic[repo_name].append(layer_id)
+
+    for usr in usrTOrepodic.keys():
+        for repo in usrTOrepodic[usr]:
+            usrTOrepoTOlayerdic[usr].append({repo:repoTOlayerdic[repo]})
         
     with open(os.path.join(input_dir, 'usr2repo2layer_map.json'), 'w') as fp:
         json.dump(usrTOrepoTOlayerdic, fp)
-           
-            
-                       
+
+
+def analyze_usr_repolifetime():
+#     layerPUTGAcctimedic = defaultdict(list)  # 
+#     layerNPUTGAcctimedic = defaultdict(list) #
+#     layerNGETAcctimedic = {}
+    
+#     layer1stPUT = -1
+# #     layer1stGET = -1
+#     layerNPUT = False
+#     layerNGET = False
+#     layecntGET = 0
+    
+    with open(os.path.join(input_dir, 'usr2repo2layer_map.json')) as fp:
+        usrrepolayer_map = json.load(fp)
+
+#     with open(os.path.join(input_dir, 'layer_access.json')) as fp:
+#         layerTOtimedic = json.load(fp)
+
+#     for k in sorted(layerTOtimedic, key=lambda k: len(layerTOtimedic[k]), reversed=True):
+#          
+#         lifetime = layerTOtimedic[k][len(layerTOtimedic[k][0])-1][1] - layerTOtimedic[k][0][1]
+#         lifetime = lifetime.total_seconds()
+#            
+#         lst = layerTOtimedic[k]
+#         
+#         if 'PUT' == lst[0][0]:
+#             layer1stPUT = 0
+#             if len(lst) == 1:
+#                 layerNGET = True
+#         else:
+#             layerNPUT = True
+#             
+#         if False == layerNGET:
+#             layerNGETAcctimedic[k] = True
+#             continue
+#         
+#         interaccess = ((),)
+#         #interaccess = interaccess + (k,)
+#         # (digest, next pull time)
+#         
+#         for i in len(lst)-2:
+#             nowtime = lst[i][1]
+#             nexttime = lst[i+1][1]
+#             delta = nexttime - nowtime
+#             delta = delta.total_seconds()
+#             
+#             interaccess = interaccess + (delta,)                   
+#                     
+#         if -1 == layer1stPUT:
+#             layerNPUTGAcctimedic[k] = interaccess
+#         else:
+#             layerPUTGAcctimedic[k] = interaccess
+
+#     if layerNGETAcctimedic:
+
+    NlayerPUTGAcctimedic = 0
+    NlayerNPUTGAcctimedic = 0
+    NlayerNGETAcctimedic = 0
+    
+    repoTOlayerdic = defaultdict(list) # repoTOlayerdic
+    userTOlayerdic = defaultdict(list)
+
+    with open(os.path.join(input_dir, 'layerNGETAcctime.json'), 'w') as fp:
+        layerNGETAcctimedic = json.load(fp)
+#     if layerNPUTGAcctimedic:
+    with open(os.path.join(input_dir, 'layerNPUTAcctime.json'), 'w') as fp:
+        layerNPUTGAcctimedic = json.load(fp)
+#     if layerPUTGAcctimedic:
+    with open(os.path.join(input_dir, 'layerPUTGAcctime.json'), 'w') as fp:
+         layerPUTGAcctimedic = json.load(fp)
+         
+    for usr in usrrepolayer_map.keys():
+        for repo in usrrepolayer_map[k]:
+            for layer in repo.keys():
+                try:
+                    lst = layerPUTGAcctimedic[layer]
+                except Exception as e:
+                    print "not put - get layer"
                     
+                    NlayerPUTGAcctimedic = 1
+                    
+                    try:
+                        lst = layerNPUTGAcctimedic[layer]
+                    except Exception as e:
+                        print "not nput - get layer"
+                        
+                        NlayerNPUTGAcctimedic = 1
+                        
+                        try:
+                            lst = layerNGETAcctimedic[layer]
+                        except Exception as e:
+                            print "not nget layer"
+                            
+                            NlayerNGETAcctimedic = 1
+                
+                if NlayerNPUTGAcctimedic and NlayerNPUTGAcctimedic and NlayerNGETAcctimedic:
+                    print "this is not a legal layer"
+                    continue
+                elif NlayerNPUTGAcctimedic == 0:
+                    pass
+                    
+                    
+                
+                
+                    
+                
+            
+                              
 # tub = (k, lifetime)      
             
 #             else:
