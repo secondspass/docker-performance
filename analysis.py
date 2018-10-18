@@ -546,7 +546,7 @@ def analyze_usr_repolifetime():
     NlayerNPUTGAcctimedic = 0
     NlayerNGETAcctimedic = 0
     
-    repoTOlayerdic = {}
+    repoTOlayerdic = defaultdict(list)
     
 #     userTOlayerdic = defaultdict(list)
 
@@ -613,7 +613,7 @@ def analyze_usr_repolifetime():
                     repoTONGETAlayerdic[layer].append(lst)
                     repodic[repoTONGETAlayerdic].append({layer: repoTONGETAlayerdic[layer]})
         
-            repoTOlayerdic[repo] = repodic      
+            repoTOlayerdic[repo].append(repodic)     
     with open(os.path.join(input_dir, 'repo2layersaccesstime.json'), 'w') as fp:
         json.dump(repoTOlayerdic, fp)           
                     
