@@ -574,7 +574,12 @@ def analyze_usr_repolifetime():
                 repoTONPUTAlayerdic = defaultdict(list)
                 repoTONGETAlayerdic = defaultdict(list)
                 
-                repodic = defaultdict(list)
+#                 repodic = defaultdict(list)
+                repodic = {
+                        'layerPUTGAlayerdic': [],
+                        'layerNPUTGAcctimedic': [],
+                        'layerNGETAlayerdic': []
+                    }
             
                 for layer in layers:#repo.keys():
                     try:
@@ -606,14 +611,14 @@ def analyze_usr_repolifetime():
                         continue
                     elif NlayerPUTGAcctimedic == 0:
                         """this is a layerNPUTGAcctimedic"""
-                        repoTOPUTGAlayerdic[layer].append(lst)
-                        repodic['repoTOPUTGAlayerdic'].append({layer: repoTOPUTGAlayerdic[layer]}) 
+#                         repoTOPUTGAlayerdic[layer].append(lst)
+                        repodic['layerPUTGAlayerdic'].append({layer: lst}) 
                     elif NlayerNPUTGAcctimedic == 0:
-                        repoTONPUTAlayerdic[layer].append(lst)
-                        repodic['NlayerNPUTGAcctimedic'].append({layer: repoTONPUTAlayerdic[layer]})
+#                         repoTONPUTAlayerdic[layer].append(lst)
+                        repodic['layerNPUTGAcctimedic'].append({layer: lst})
                     elif NlayerNGETAcctimedic == 0:
-                        repoTONGETAlayerdic[layer].append(lst)
-                        repodic['repoTONGETAlayerdic'].append({layer: repoTONGETAlayerdic[layer]})
+#                         repoTONGETAlayerdic[layer].append(lst)
+                        repodic['layerNGETAlayerdic'].append({layer: lst})
                         
             repoTOlayerdic[repo] = repodic
         
