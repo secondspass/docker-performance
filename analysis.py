@@ -448,6 +448,7 @@ def analyze_repo_reqs(total_trace):
         uri = r['http.request.uri']
         usrname = uri.split('/')[1]
         repo_name = uri.split('/')[2]
+	repo_name = usrname+'/'+repo_name
         
         if 'blob' in uri:
             layer_id = uri.rsplit('/', 1)[1]
@@ -609,7 +610,7 @@ def analyze_usr_repolifetime():
                         repodic['repoTOPUTGAlayerdic'].append({layer: repoTOPUTGAlayerdic[layer]}) 
                     elif NlayerNPUTGAcctimedic == 0:
                         repoTONPUTAlayerdic[layer].append(lst)
-                        repodic['repoTONPUTAlayerdic'].append({layer: repoTONPUTAlayerdic[layer]})
+                        repodic['NlayerNPUTGAcctimedic'].append({layer: repoTONPUTAlayerdic[layer]})
                     elif NlayerNGETAcctimedic == 0:
                         repoTONGETAlayerdic[layer].append(lst)
                         repodic['repoTONGETAlayerdic'].append({layer: repoTONGETAlayerdic[layer]})
