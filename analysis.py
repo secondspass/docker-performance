@@ -600,10 +600,10 @@ def analyze_usr_repolifetime():
                         print "cannot find the layer: "+layer 
                         continue                            
                     
-                    if NlayerPUTGAcctimedic and NlayerNPUTGAcctimedic and NlayerNGETAcctimedic:
-                        print "this is not a legal layer"
-                        continue
-                    elif NlayerPUTGAcctimedic == 1:
+#                     if NlayerPUTGAcctimedic and NlayerNPUTGAcctimedic and NlayerNGETAcctimedic:
+#                         print "this is not a legal layer"
+#                         continue
+                    if NlayerPUTGAcctimedic == 1:
                         print "this is a layerPUTGAcctimedic"
 #                         repoTOPUTGAlayerdic[layer].append(lst)
                         repodic['layerPUTGAlayerdic'].append({layer: lst}) 
