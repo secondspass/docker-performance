@@ -561,9 +561,9 @@ def analyze_usr_repolifetime():
          layerPUTGAcctimedic = json.load(fp)
     cnt = 0
     for usr in usrrepolayer_map.keys():   
-	cnt += 1
-	if cnt > 100:
-	    break;     
+        cnt += 1
+        if cnt > 100:
+            break;     
 #         usrTOrepodic = defaultdict(list) # repoTOlayerdic
 #         repoTONPUTAlayerdic = defaultdict(list)
 #         repoTONGETAlayerdic = defaultdict(list)
@@ -587,26 +587,15 @@ def analyze_usr_repolifetime():
                     }
             
                 for layer in layers:#repo.keys():
-                    try:
-                        lst = layerPUTGAcctimedic[layer]
-                    except Exception as e:
-                        print "not put - get layer"+str(e)
-			#print(e)
+                    if layer in layerPUTGAcctimedic.keys():
                         NlayerPUTGAcctimedic = 1
-                        
-                        try:
-                            lst = layerNPUTGAcctimedic[layer]
-                        except Exception as e:
-                            print "not nput - get layer"+str(e)
-                            
-                            NlayerNPUTGAcctimedic = 1
-                            
-                            try:
-                                lst = layerNGETAcctimedic[layer]
-                            except Exception as e:
-                                print "not nget layer"+str(e)
-                                
-                                NlayerNGETAcctimedic = 1
+                        lst = layerPUTGAcctimedic[layer]
+                    elif layer in layerNPUTGAcctimedic.keys():
+                        NlayerNPUTGAcctimedic = 1
+                        lst = layerNPUTGAcctimedic[layer]
+                    elif layer in layerNGETAcctimedic.keys():
+                        NlayerNGETAcctimedic = 1
+                        lst = layerNGETAcctimedic[layer]                              
                     
                     if NlayerPUTGAcctimedic and NlayerNPUTGAcctimedic and NlayerNGETAcctimedic:
                         print "this is not a legal layer"
@@ -614,16 +603,16 @@ def analyze_usr_repolifetime():
                     elif (NlayerPUTGAcctimedic == 0) and (NlayerNPUTGAcctimedic == 0) and (NlayerNGETAcctimedic == 0):
                         print "this is not a layer"
                         continue
-                    elif NlayerPUTGAcctimedic == 0:
+                    elif NlayerPUTGAcctimedic == 1:
                         print "this is a layerPUTGAcctimedic"
 #                         repoTOPUTGAlayerdic[layer].append(lst)
                         repodic['layerPUTGAlayerdic'].append({layer: lst}) 
-                    elif NlayerNPUTGAcctimedic == 0:
-			print "this is a layerNPUTGAcctimedic"
+                    elif NlayerNPUTGAcctimedic == 1:
+                        print "this is a layerNPUTGAcctimedic"
 #                         repoTONPUTAlayerdic[layer].append(lst)
                         repodic['layerNPUTGAcctimedic'].append({layer: lst})
-                    elif NlayerNGETAcctimedic == 0:
-			print "this is a layerNGETAcctimedic"
+                    elif NlayerNGETAcctimedic == 1:
+                        print "this is a layerNGETAcctimedic"
 #                         repoTONGETAlayerdic[layer].append(lst)
                         repodic['layerNGETAlayerdic'].append({layer: lst})
                         
