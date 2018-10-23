@@ -595,13 +595,13 @@ def analyze_usr_repolifetime():
                         lst = layerNPUTGAcctimedic[layer]
                     elif layer in layerNGETAcctimedic.keys():
                         NlayerNGETAcctimedic = 1
-                        lst = layerNGETAcctimedic[layer]                              
+                        lst = layerNGETAcctimedic[layer]
+                    else:
+                        print "cannot find the layer: "+layer 
+                        continue                            
                     
                     if NlayerPUTGAcctimedic and NlayerNPUTGAcctimedic and NlayerNGETAcctimedic:
                         print "this is not a legal layer"
-                        continue
-                    elif (NlayerPUTGAcctimedic == 0) and (NlayerNPUTGAcctimedic == 0) and (NlayerNGETAcctimedic == 0):
-                        print "this is not a layer"
                         continue
                     elif NlayerPUTGAcctimedic == 1:
                         print "this is a layerPUTGAcctimedic"
