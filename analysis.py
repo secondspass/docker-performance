@@ -358,7 +358,8 @@ def analyze_layerlifetime():
             layerNGETAcctimedic[k] = True
             continue
         
-        interaccess = ((),)
+        starttime = lst[0][1]#datetime.datetime.strptime(lst[0][1], '%Y-%m-%dT%H:%M:%S.%fZ')
+        interaccess = ((starttime),)
         #interaccess = interaccess + (k,)
         # (digest, next pull time)
         
@@ -448,7 +449,7 @@ def analyze_repo_reqs(total_trace):
         uri = r['http.request.uri']
         usrname = uri.split('/')[1]
         repo_name = uri.split('/')[2]
-	repo_name = usrname+'/'+repo_name
+        repo_name = usrname+'/'+repo_name
         
         if 'blob' in uri:
             layer_id = uri.rsplit('/', 1)[1]
@@ -460,13 +461,22 @@ def analyze_repo_reqs(total_trace):
             print "repo_name: "+repo_name
             print "usrname: "+usrname
             
-            try:
-                lst = repoTOlayerdic[repo_name]
-                if layer_id not in lst:
+            if repo_name in repoTOlayerdic.keys():
+                if layer_id not in repoTOlayerdic[repo_name]:
                     repoTOlayerdic[repo_name].append(layer_id)
-            except Exception as e:
-                print "repo has not this layer before"
+            else:
                 repoTOlayerdic[repo_name].append(layer_id)
+                
+            
+#             try:
+#                 lst = repoTOlayerdic[repo_name]
+#                 if layer_id not in lst:
+#                     repoTOlayerdic[repo_name].append(layer_id)
+#             except Exception as e:
+#                 print "repo has not this layer before"
+#                 repoTOlayerdic[repo_name].append(layer_id)
+
+            if 
                 
             try:
                 lst = usrTOrepodic[usrname]
@@ -481,9 +491,21 @@ def analyze_repo_reqs(total_trace):
             #layerTOtimedic[layer_id].append((method, timestamp))
 #             repoTOlayerdic[repo_name].append(layer_id)
 
+    for repo in repoTOlayerdic.keys():
+        jsondata = {
+            ''
+        }
+
     for usr in usrTOrepodic.keys():
         for repo in usrTOrepodic[usr]:
             usrTOrepoTOlayerdic[usr].append({repo:repoTOlayerdic[repo]})
+            
+    for usr in usrTOrepodic.keys():
+        jsondata = {
+            'usr': usr,
+            'repos': usrTOrepoTOlayerdic[usr]
+            
+        }
         
     with open(os.path.join(input_dir, 'usr2repo2layer_map.json'), 'w') as fp:
         json.dump(usrTOrepoTOlayerdic, fp)
@@ -625,13 +647,7 @@ def analyze_usr_repolifetime():
     with open(os.path.join(input_dir, 'repo2layersaccesstime.json'), 'w') as fp:
         json.dump(repoTOlayerdic, fp)           
                     
-                    
-                    
-                
-                
-                    
-                
-            
+         
                               
 # tub = (k, lifetime)      
             
@@ -776,8 +792,8 @@ def main():
     elif args.command == 'repolayer':
         analyze_usr_repolifetime()
         return
-    else:
-        return
+#     else:
+#         return
 
 #     json_data = get_requests(trace_files, limit_type, limit)
 # 
@@ -843,8 +859,8 @@ def main():
 #         ## Perform GET
 #         get_blobs(data, client_list, port, out_file)
 # 
-# 
-#     elif args.command == 'simulate':
+        
+    elif args.command == 'simulate':
 #         if verbose:
 #             print 'simulate mode'
 #         if 'simulate' not in inputs:
@@ -853,20 +869,24 @@ def main():
 #         pi = inputs['simulate']['name']
 #         if '.py' in pi:
 #             pi = pi[:-3]
-#         try:
-#             plugin = importlib.import_module(pi)
-#         except Exception as inst:
-#             print 'Plugin did not work!'
-#             print inst
-#             exit(1)
-#         try:
+        with open(os.path.join(input_dir, 'layer_access.json'), 'r') as fp:
+            json_data = json.load(fp)
+        
+        pi = 'cache'
+        try:
+            plugin = importlib.import_module(pi)
+        except Exception as inst:
+            print 'Plugin did not work!'
+            print inst
+            exit(1)
+        try:
 #             if 'args' in inputs['simulate']:
-#                 plugin.init(json_data, inputs['simulate']['args'])
-#             else:
 #                 plugin.init(json_data)
-#         except Exception as inst:
-#             print 'Error running plugin init!'
-#             print inst
+#             else:
+                plugin.init(json_data)
+        except Exception as inst:
+            print 'Error running plugin init!'
+            print inst
 
 
 if __name__ == "__main__":

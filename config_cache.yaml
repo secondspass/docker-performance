@@ -1,0 +1,58 @@
+# excample configuration file for global cache
+
+cache_para:
+    usr_window:
+    repo_window:
+    layer_window:
+
+prefetch_para:
+    repo_window:
+    layer_window:
+
+usr_info: # user information
+    lst_acc_time: # the last access time of this usr
+    acc_cnt:  # number of access for the usr 
+    reuse_times: # delta t between one access and its next access.
+        # - delta 1
+    repos_cnt: # number of repos for the usr
+    layers_cnt: # number of layers for the usr
+    positions: # positions in the cache stack
+    arrive_times: # time takes to arrive this position.
+    eviction_times: # duration
+
+repo_info: # user information
+    lst_acc_time: # the last access time of this repo
+    acc_cnt:  # number of access for the repo 
+    reuse_times: # delta t between one access and its next access.
+        # - delta1
+    layers_cnt: # number of layers for the usr
+    positions: # positions in the cache stack
+    arrive_times: # time takes to arrive this position.
+    eviction_times: # duration
+
+layer_info: # user information
+    lst_acc_time: # the last access time of this repo
+    acc_cnt:  # number of access for the repo 
+    reuse_times: # delta t between one access and its next access.
+        # - delta1
+    positions: # positions in the cache stack
+    arrive_times: # time takes to arrive this position.
+    eviction_times: # duration
+
+# excample configuration file for local cache
+
+cache_para:
+    prepare_window: # prepare layer files and store in the cache devices on Get manifest reqs.
+    prefetch_window: # prefetch layer files based on usr_info, repo_info, layer_info, and file_info.
+ 
+file_info:
+    lst_acc_time: # the last access time for this usr;
+    acc_cnt:  # number of access for the usr 
+    reuse_times: # delta t between one access and its next access.
+        # - delta 1
+    positions: # positions in the cache stack
+    arrive_times: # time takes to arrive this position.
+    eviction_times: # duration
+    shared_usr_cnt: # number of usrs who use this file
+    shared_repos_cnt: # number of repos who use this file
+    shared_layers_cnt: # number of layers who use this file

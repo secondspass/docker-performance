@@ -150,7 +150,7 @@ def reformat(indata):
             continue
 
         layer = item['uri'].split('/')[-1]
-        ret.append((item['delay'], item['size'], layer))
+        ret.append((item['delay'], item['size'], layer)) # delay: datetime
 
     return ret
 
@@ -162,7 +162,30 @@ def run_sim(requests, size):
     caches.append(complex_cache(size=size, fssize = 20))
     i = 0
     count = 10
+    j = 0
+    hr_no = 0
+    hit_ratio_each_hr = {}
+    
     for request in requests:
+        j += 1
+        if j == 1:
+            starttime = request[0]
+            print "starttime: "+str(starttime)
+        if int((request[j] - starttime).total_seconds) % (60*60) == 0: # calculate for each hr
+            hr_no += 1
+            hit_ratio_each_hr[str(hr_no) + ' 10 lmu hits'] = caches[i].get_lmu_hits()
+            hit_ratio_each_hr[str(hr_no) + ' 10 lmu misses'] = caches[i].get_lmu_misses()
+            hit_ratio_each_hr[str(hr_no) + ' 10 h hits'] = caches[i].get_h_hits()
+            hit_ratio_each_hr[str(hr_no) + ' 10 h misses'] = caches[i].get_h_misses()
+            hit_ratio_each_hr[str(hr_no) + ' 15 lmu hits'] = caches[i + 1].get_lmu_hits()
+            hit_ratio_each_hr[str(hr_no) + ' 15 lmu misses'] = caches[i + 1].get_lmu_misses()
+            hit_ratio_each_hr[str(hr_no) + ' 15 h hits'] = caches[i + 1].get_h_hits()
+            hit_ratio_each_hr[str(hr_no) + ' 15 h misses'] = caches[i + 1].get_h_misses()
+            hit_ratio_each_hr[str(hr_no) + ' 20 lmu hits'] = caches[i + 2].get_lmu_hits()
+            hit_ratio_each_hr[str(hr_no) + ' 20 lmu misses'] = caches[i + 2].get_lmu_misses()
+            hit_ratio_each_hr[str(hr_no) + ' 20 h hits'] = caches[i + 2].get_h_hits()
+            hit_ratio_each_hr[str(hr_no) + ' 20 h misses'] = caches[i + 2].get_h_misses()
+                
         if 1.*i / len(requests) > 0.1:
             i = 0
             print str(count) + '% done'
