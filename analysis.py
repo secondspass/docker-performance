@@ -573,33 +573,34 @@ def analyze_usr_repolifetime():
     
 #     userTOlayerdic = defaultdict(list)
 
-    with open(os.path.join(input_dir, 'layerNGETAcctime.json'), 'r') as fp:
-        layerNGETAcctimedic = json.load(fp)
+    with open(os.path.join(input_dir, 'layerNGETAcctime.json')) as fp1:
+        layerNGETAcctimedic = json.load(fp1)
 #     if layerNPUTGAcctimedic:
-    with open(os.path.join(input_dir, 'layerNPUTAcctime.json'), 'r') as fp:
-        layerNPUTGAcctimedic = json.load(fp)
+    with open(os.path.join(input_dir, 'layerNPUTAcctime.json')) as fp2:
+        layerNPUTGAcctimedic = json.load(fp2)
 #     if layerPUTGAcctimedic:
-    with open(os.path.join(input_dir, 'layerPUTGAcctime.json'), 'r') as fp:
-         layerPUTGAcctimedic = json.load(fp)
-    cnt = 0
+    with open(os.path.join(input_dir, 'layerPUTGAcctime.json')) as fp3:
+         layerPUTGAcctimedic = json.load(fp3)
+    #cnt = 0
     for usr in usrrepolayer_map.keys():   
-        cnt += 1
-        if cnt > 100:
-            break;     
+        #cnt += 1
+        #if cnt > 100:
+        #    break;     
 #         usrTOrepodic = defaultdict(list) # repoTOlayerdic
 #         repoTONPUTAlayerdic = defaultdict(list)
 #         repoTONGETAlayerdic = defaultdict(list)
-        
+        print "process usr "+usr
         for repo_item in usrrepolayer_map[usr]:  
-            for repo, layers in repo_item.items():                          
+            for repo, layers in repo_item.items():                         
                 if repo in repoTOlayerdic.keys():
-                    continue
+			continue
+                print "process repo "+repo
                 #cnt += 1
 		#if cnt > 1000:
 		   
-                repoTOPUTGAlayerdic = defaultdict(list) # repoTOlayerdic
-                repoTONPUTAlayerdic = defaultdict(list)
-                repoTONGETAlayerdic = defaultdict(list)
+                #repoTOPUTGAlayerdic = defaultdict(list) # repoTOlayerdic
+                #repoTONPUTAlayerdic = defaultdict(list)
+                #repoTONGETAlayerdic = defaultdict(list)
                 
 #                 repodic = defaultdict(list)
                 repodic = {
@@ -626,15 +627,15 @@ def analyze_usr_repolifetime():
 #                         print "this is not a legal layer"
 #                         continue
                     if NlayerPUTGAcctimedic == 1:
-                        print "this is a layerPUTGAcctimedic"
+                        print "this is a layerPUTGAcctimedic "+layer
 #                         repoTOPUTGAlayerdic[layer].append(lst)
                         repodic['layerPUTGAlayerdic'].append({layer: lst}) 
                     elif NlayerNPUTGAcctimedic == 1:
-                        print "this is a layerNPUTGAcctimedic"
+                        print "this is a layerNPUTGAcctimedic "+layer
 #                         repoTONPUTAlayerdic[layer].append(lst)
                         repodic['layerNPUTGAcctimedic'].append({layer: lst})
                     elif NlayerNGETAcctimedic == 1:
-                        print "this is a layerNGETAcctimedic"
+                        print "this is a layerNGETAcctimedic "+layer
 #                         repoTONGETAlayerdic[layer].append(lst)
                         repodic['layerNGETAlayerdic'].append({layer: lst})
                         
