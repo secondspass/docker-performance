@@ -1,4 +1,5 @@
 import sys
+import traceback
 import socket
 import os
 from argparse import ArgumentParser
@@ -476,7 +477,7 @@ def analyze_repo_reqs(total_trace):
 #                 print "repo has not this layer before"
 #                 repoTOlayerdic[repo_name].append(layer_id)
 
-            if 
+            #if 
                 
             try:
                 lst = usrTOrepodic[usrname]
@@ -870,10 +871,10 @@ def main():
 #         pi = inputs['simulate']['name']
 #         if '.py' in pi:
 #             pi = pi[:-3]
-        with open(os.path.join(input_dir, 'layer_access.json'), 'r') as fp:
+        with open(os.path.join(input_dir, 'total_trace.json'), 'r') as fp:
             json_data = json.load(fp)
         
-        pi = 'cache'
+        pi = 'cache_usr_repo_layer'
         try:
             plugin = importlib.import_module(pi)
         except Exception as inst:
@@ -881,14 +882,11 @@ def main():
             print inst
             exit(1)
         try:
-#             if 'args' in inputs['simulate']:
-#                 plugin.init(json_data)
-#             else:
-                plugin.init(json_data)
+            plugin.init(json_data)
         except Exception as inst:
             print 'Error running plugin init!'
             print inst
-
+            print traceback.print_exc()
 
 if __name__ == "__main__":
     main()

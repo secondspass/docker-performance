@@ -1,0 +1,9 @@
+*.pyc
+*~
+[#]*[#]
+*.log
+*.json
+*.json-old
+error_output
+out.lst
+notes.md
