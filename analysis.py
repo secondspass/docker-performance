@@ -410,6 +410,7 @@ def analyze_requests(total_trace):
         repo_name = uri.split('/')[2]
         
         if 'blob' in uri:
+            # uri format: v2/<username>/<repo name>/[blobs/uploads | manifests]/<manifest or layer id>
             layer_id = uri.rsplit('/', 1)[1]
             timestamp = r['timestamp']
     #        timestamp = datetime.datetime.strptime(r['timestamp'], '%Y-%m-%dT%H:%M:%S.%fZ')
@@ -874,7 +875,7 @@ def main():
         with open(os.path.join(input_dir, 'total_trace.json'), 'r') as fp:
             json_data = json.load(fp)
         
-        pi = 'cache_usr_repo_layer'
+        pi = 'prefetch' #'cache_usr_repo_layer'
         try:
             plugin = importlib.import_module(pi)
         except Exception as inst:
