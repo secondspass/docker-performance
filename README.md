@@ -43,12 +43,17 @@ The configuration should be a yaml file, refer to config-example.yaml as an exam
 * required for run mode
 
 client_info options:
-
+ 
 * client_list: list of hostname:port for all client nodes. Required option
 * port: int, the master port the clients will connect to to forward their results.
-* threads: int, Specifies how many processes a single client should spawn to forward requests. The number of possible concurrent connections is limited by the number of threads per client times the number of clients
-* wait: boolean, if true, the client threads will wait the relative time between requests as recorded in the traces. If false or absent, the clients will send requests as fast as possible.
-* route: optional boolean which instructs the master to route requests to clients based on the remote address of the traces rather than round robin routing.
+* threads: int, Specifies how many processes a single client should spawn to forward
+  requests. The number of possible concurrent connections is limited by the number of
+  threads per client times the number of clients
+* wait: boolean, if true, the client threads will wait the relative time between requests
+  as recorded in the traces. If false or absent, the clients will send requests as fast as
+  possible.
+* route: optional boolean which instructs the master to route requests to clients based on
+  the remote address of the traces rather than round robin routing.
 
 #### verbose
 * Optional Booblean, if true prints more information to standard out
@@ -58,16 +63,19 @@ client_info options:
 
 trace options:
 
-* location, optional path to the anonymized traces, current directory assumed if absent. Absolute path should be used.
+* location, optional path to the anonymized traces, current directory assumed if
+  absent. Absolute path should be used.
 * traces, mandatory list of trace files to be read as input
 * limit, optional structure to specify how to limit the number of requests
-..* type: string that can be either "seconds" or "requests" 
-..* amount: specifies the limit of the specified type. For example, if type is seconds and amount is 100, only the first 100 seconds of requests will be used
+  * type: string that can be either "seconds" or "requests" 
+  * amount: specifies the limit of the specified type. For example, if type is seconds and
+    amount is 100, only the first 100 seconds of requests will be used
 * output: optional filename of where to store output trace of run mode. Default is output.json
 
 ### registry
 
-* list of registries to send requests to in warmup and run mode. Only first entry is used in warmup mode, however
+* list of registries to send requests to in warmup and run mode. Only first entry is used
+  in warmup mode, however
 
 ### warmup
 

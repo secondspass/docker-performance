@@ -21,12 +21,19 @@ trace: # mandatory field
     location: /home/nannan/dockerimages/docker-traces/data_centers/dal09/  #/home/michaellittley/data_centers/dal09 # current directory assumed if field not present
     traces:
         - prod-dal09-logstash-2017.08.01-0.json # at least one trace required
-    # entire trace used if limit not speciiied
-    limit: 
-        type: requests # seconds and requests are supported
-        amount: 100
+        - prod-dal09-logstash-2017.08.05-0.json
+        - prod-dal09-logstash-2017.09.02-2.json
+        - prod-dal09-logstash-2017.08.05-1.json
+        - prod-dal09-logstash-2017.09.02-3.json
+        - prod-dal09-logstash-2017.08.05-2.json
+        - prod-dal09-logstash-2017.09.02-4.json
 
-    output: results.json # only used in run mode, produced output trace with latencies
+    # entire trace used if limit not speciiied
+    # limit: 
+    #     type: requests # seconds and requests are supported
+    #     amount: 10000
+
+    output: prefetch_results.json # only used in run mode, produced output trace with latencies
 
 registry:
     - hulk0:5000 # at least one registry required for run and warmup mode
@@ -39,6 +46,6 @@ warmup: # required for run and warmup mode
     random: true # instructs the master to create a random file of the layer size rather than a string of 0's equal to the layer size in the trace
 
 simulate: # required for simulate mode
-    name: cache.py #name of plugin file, should contain init function
+    name: prefetch.py #name of plugin file, should contain init function
     args: # argument dictionary to be passed into 
         cache_size: 8 # cache size in GB
