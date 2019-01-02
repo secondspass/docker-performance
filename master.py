@@ -196,7 +196,7 @@ def get_blobs(data, clients_list, port, out_file):
 def get_requests(files, t, limit):
     ret = []
     for filename in files:
-        with open(filename, 'r') as f:
+        with open(filename+'-realblob.json', 'r') as f:
             requests = json.load(f)
     
         for request in requests:
