@@ -273,5 +273,5 @@ def init(data):
         size = n['max size']
         ratio = 1.*n['hits'] / (n['good prefetch'] + n['bad prefetch'])
         f1.write(str(ratio) + ',' + str(size) + '\n')
-    f.close()
-
+    f1.close()
+    f2.close()

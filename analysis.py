@@ -875,7 +875,7 @@ def main():
         with open(os.path.join(input_dir, 'total_trace.json'), 'r') as fp:
             json_data = json.load(fp)
         
-        pi = 'prefetch' #'cache_usr_repo_layer'
+        pi = 'prefetch_old' #'cache_usr_repo_layer'
         try:
             plugin = importlib.import_module(pi)
         except Exception as inst:
