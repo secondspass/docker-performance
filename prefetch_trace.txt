@@ -1,0 +1,14 @@
+# format is: (number of hits / (good prefetch + bad prefetch)), max size of cache
+# threshold - how long an element will remain in the lookup table or cache before removal
+
+# lookup table threshold: 10 minutes ; cache threshold: 10 minutes
+4.66715267598,13388208827
+
+# lookup table threshold: 10 minutes ; cache threshold: 1 hour
+9.18583282285,23154812725
+
+# lookup table threshold: 10 minutes ; cache threshold: 12 hours
+21.6720277638,89644686466
+
+# lookup table threshold: 10 minutes ; cache threshold: 24 hours
+209.844777351,3889826428882

@@ -1,0 +1,11 @@
+# lookup table threshold: 10 minutes ; cache threshold: 10 minutes
+{'max size': 13388208827, 'hits': 1779758, 'misses': 6582859, 'bad prefetch': 99756, 'good prefetch': 281581}
+
+# lookup table threshold: 10 minutes ; cache threshold: 1 hour
+{'max size': 23154812725, 'hits': 3134050, 'misses': 6368927, 'bad prefetch': 74616, 'good prefetch': 266567}
+
+# lookup table threshold: 10 minutes ; cache threshold: 12 hours
+{'max size': 89644686466, 'hits': 6113549, 'misses': 5912449, 'bad prefetch': 47292, 'good prefetch': 234802}
+
+# lookup table threshold: 10 minutes ; cache threshold: 24 hours
+{'max size': 3889826428882, 'hits': 40692050, 'misses': 3911621, 'bad prefetch': 23471, 'good prefetch': 170444}

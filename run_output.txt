@@ -1,0 +1,96 @@
+Verbose Mode
+Input traces
+/home/nannan/dockerimages/docker-traces/data_centers/dal09/prod-dal09-logstash-2017.06.20-0.json
+/home/nannan/dockerimages/docker-traces/data_centers/dal09/prod-dal09-logstash-2017.06.20-1.json
+/home/nannan/dockerimages/docker-traces/data_centers/dal09/prod-dal09-logstash-2017.06.20-2.json
+/home/nannan/dockerimages/docker-traces/data_centers/dal09/prod-dal09-logstash-2017.06.20-3.json
+/home/nannan/dockerimages/docker-traces/data_centers/dal09/prod-dal09-logstash-2017.06.21-0.json
+/home/nannan/dockerimages/docker-traces/data_centers/dal09/prod-dal09-logstash-2017.06.21-1.json
+/home/nannan/dockerimages/docker-traces/data_centers/dal09/prod-dal09-logstash-2017.06.21-2.json
+/home/nannan/dockerimages/docker-traces/data_centers/dal09/prod-dal09-logstash-2017.06.21-3.json
+/home/nannan/dockerimages/docker-traces/data_centers/dal09/prod-dal09-logstash-2017.06.22-0.json
+/home/nannan/dockerimages/docker-traces/data_centers/dal09/prod-dal09-logstash-2017.06.22-1.json
+/home/nannan/dockerimages/docker-traces/data_centers/dal09/prod-dal09-logstash-2017.06.22-2.json
+/home/nannan/dockerimages/docker-traces/data_centers/dal09/prod-dal09-logstash-2017.06.22-3.json
+/home/nannan/dockerimages/docker-traces/data_centers/dal09/prod-dal09-logstash-2017.06.23-0.json
+/home/nannan/dockerimages/docker-traces/data_centers/dal09/prod-dal09-logstash-2017.06.23-1.json
+/home/nannan/dockerimages/docker-traces/data_centers/dal09/prod-dal09-logstash-2017.06.23-2.json
+/home/nannan/dockerimages/docker-traces/data_centers/dal09/prod-dal09-logstash-2017.06.23-3.json
+/home/nannan/dockerimages/docker-traces/data_centers/dal09/prod-dal09-logstash-2017.06.24-0.json
+/home/nannan/dockerimages/docker-traces/data_centers/dal09/prod-dal09-logstash-2017.06.24-1.json
+/home/nannan/dockerimages/docker-traces/data_centers/dal09/prod-dal09-logstash-2017.06.24-2.json
+/home/nannan/dockerimages/docker-traces/data_centers/dal09/prod-dal09-logstash-2017.06.24-3.json
+/home/nannan/dockerimages/docker-traces/data_centers/dal09/prod-dal09-logstash-2017.06.25-0.json
+/home/nannan/dockerimages/docker-traces/data_centers/dal09/prod-dal09-logstash-2017.06.25-1.json
+/home/nannan/dockerimages/docker-traces/data_centers/dal09/prod-dal09-logstash-2017.06.25-2.json
+/home/nannan/dockerimages/docker-traces/data_centers/dal09/prod-dal09-logstash-2017.06.25-3.json
+/home/nannan/dockerimages/docker-traces/data_centers/dal09/prod-dal09-logstash-2017.06.26-0.json
+/home/nannan/dockerimages/docker-traces/data_centers/dal09/prod-dal09-logstash-2017.06.26-1.json
+/home/nannan/dockerimages/docker-traces/data_centers/dal09/prod-dal09-logstash-2017.06.26-2.json
+/home/nannan/dockerimages/docker-traces/data_centers/dal09/prod-dal09-logstash-2017.06.26-3.json
+/home/nannan/dockerimages/docker-traces/data_centers/dal09/prod-dal09-logstash-2017.06.27-0.json
+/home/nannan/dockerimages/docker-traces/data_centers/dal09/prod-dal09-logstash-2017.06.27-1.json
+/home/nannan/dockerimages/docker-traces/data_centers/dal09/prod-dal09-logstash-2017.06.27-2.json
+/home/nannan/dockerimages/docker-traces/data_centers/dal09/prod-dal09-logstash-2017.06.27-3.json
+/home/nannan/dockerimages/docker-traces/data_centers/dal09/prod-dal09-logstash-2017.06.28-0.json
+/home/nannan/dockerimages/docker-traces/data_centers/dal09/prod-dal09-logstash-2017.06.28-1.json
+/home/nannan/dockerimages/docker-traces/data_centers/dal09/prod-dal09-logstash-2017.06.28-2.json
+/home/nannan/dockerimages/docker-traces/data_centers/dal09/prod-dal09-logstash-2017.06.28-3.json
+/home/nannan/dockerimages/docker-traces/data_centers/dal09/prod-dal09-logstash-2017.06.29-0.json
+/home/nannan/dockerimages/docker-traces/data_centers/dal09/prod-dal09-logstash-2017.06.29-1.json
+/home/nannan/dockerimages/docker-traces/data_centers/dal09/prod-dal09-logstash-2017.06.29-2.json
+/home/nannan/dockerimages/docker-traces/data_centers/dal09/prod-dal09-logstash-2017.06.29-3.json
+/home/nannan/dockerimages/docker-traces/data_centers/dal09/prod-dal09-logstash-2017.06.30-0.json
+/home/nannan/dockerimages/docker-traces/data_centers/dal09/prod-dal09-logstash-2017.06.30-1.json
+/home/nannan/dockerimages/docker-traces/data_centers/dal09/prod-dal09-logstash-2017.06.30-2.json
+/home/nannan/dockerimages/docker-traces/data_centers/dal09/prod-dal09-logstash-2017.06.30-3.json
+/home/nannan/dockerimages/docker-traces/data_centers/dal09/prod-dal09-logstash-2017.07.01-0.json
+/home/nannan/dockerimages/docker-traces/data_centers/dal09/prod-dal09-logstash-2017.07.01-1.json
+/home/nannan/dockerimages/docker-traces/data_centers/dal09/prod-dal09-logstash-2017.07.01-2.json
+/home/nannan/dockerimages/docker-traces/data_centers/dal09/prod-dal09-logstash-2017.07.01-3.json
+/home/nannan/dockerimages/docker-traces/data_centers/dal09/prod-dal09-logstash-2017.07.02-0.json
+/home/nannan/dockerimages/docker-traces/data_centers/dal09/prod-dal09-logstash-2017.07.02-1.json
+/home/nannan/dockerimages/docker-traces/data_centers/dal09/prod-dal09-logstash-2017.07.02-2.json
+/home/nannan/dockerimages/docker-traces/data_centers/dal09/prod-dal09-logstash-2017.07.02-3.json
+/home/nannan/dockerimages/docker-traces/data_centers/dal09/prod-dal09-logstash-2017.07.03-0.json
+/home/nannan/dockerimages/docker-traces/data_centers/dal09/prod-dal09-logstash-2017.07.03-1.json
+/home/nannan/dockerimages/docker-traces/data_centers/dal09/prod-dal09-logstash-2017.07.03-2.json
+/home/nannan/dockerimages/docker-traces/data_centers/dal09/prod-dal09-logstash-2017.07.03-3.json
+/home/nannan/dockerimages/docker-traces/data_centers/dal09/prod-dal09-logstash-2017.07.04-0.json
+/home/nannan/dockerimages/docker-traces/data_centers/dal09/prod-dal09-logstash-2017.07.04-1.json
+/home/nannan/dockerimages/docker-traces/data_centers/dal09/prod-dal09-logstash-2017.07.04-2.json
+/home/nannan/dockerimages/docker-traces/data_centers/dal09/prod-dal09-logstash-2017.07.04-3.json
+/home/nannan/dockerimages/docker-traces/data_centers/dal09/prod-dal09-logstash-2017.07.05-0.json
+/home/nannan/dockerimages/docker-traces/data_centers/dal09/prod-dal09-logstash-2017.07.05-1.json
+/home/nannan/dockerimages/docker-traces/data_centers/dal09/prod-dal09-logstash-2017.07.05-2.json
+/home/nannan/dockerimages/docker-traces/data_centers/dal09/prod-dal09-logstash-2017.07.05-3.json
+/home/nannan/dockerimages/docker-traces/data_centers/dal09/prod-dal09-logstash-2017.07.06-0.json
+/home/nannan/dockerimages/docker-traces/data_centers/dal09/prod-dal09-logstash-2017.07.06-1.json
+/home/nannan/dockerimages/docker-traces/data_centers/dal09/prod-dal09-logstash-2017.07.06-2.json
+/home/nannan/dockerimages/docker-traces/data_centers/dal09/prod-dal09-logstash-2017.07.06-3.json
+/home/nannan/dockerimages/docker-traces/data_centers/dal09/prod-dal09-logstash-2017.07.07-0.json
+/home/nannan/dockerimages/docker-traces/data_centers/dal09/prod-dal09-logstash-2017.07.07-1.json
+/home/nannan/dockerimages/docker-traces/data_centers/dal09/prod-dal09-logstash-2017.07.07-2.json
+/home/nannan/dockerimages/docker-traces/data_centers/dal09/prod-dal09-logstash-2017.07.07-3.json
+run mode
+master port: 8080
+100 client threads
+1461314884
+2947543332
+2005504900
+443987634
+starting client ...
+starting client ...
+starting client ...
+starting client ...
+server waiting
+results written to results_run.json
+Statistics
+Successful Requests: 100
+Failed Requests: 0
+Wrong digest requests: 87
+Duration: 20.9046900272
+Data Transfered: 17707579 bytes
+Average Latency: 10.8805747437
+% requests on time: 0.0
+Throughput: 4.7836155365 requests/second
