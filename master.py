@@ -322,6 +322,19 @@ def match(realblob_locations, trace_files):
         with open(trace_file+'-realblob.json', 'w') as fp:
             json.dump(ret, fp)      
         
+##############
+# NANNAN: round_robin is false!
+# "http.request.duration": 1.005269323, 
+# "http.request.uri": "v2/4715bf52/437c49db/blobs/93054319", 
+# "host": "dc118836", 
+# "http.request.useragent": "docker/17.03.1-ce go/go1.7.5 git-commit/c6d412e kernel/4.4.0-78-generic os/linux arch/amd64 UpstreamClient(Docker-Client/17.03.1-ce \\(linux\\))", 
+# "timestamp": "2017-06-20T02:41:18.399Z", 
+# "id": "ed29d65dbd", 
+# "http.response.written": 9576, 
+# "http.response.status": 200, 
+# "http.request.method": "GET", 
+# "http.request.remoteaddr": "0ee76ffa"
+##############
 
 def organize(requests, out_trace, numclients, client_threads, port, wait, registries, round_robin, push_rand):
     organized = []
