@@ -5,11 +5,10 @@ from lru import LRU
 import json
 
 type = 'layer'
-num_usrs = 9997
-num_repos = 40264
-num_layers = 829202
+# num_usrs = 9997
+# num_repos = 40264
+# num_layers = 829202
 
-outputfile = 'hit_ratio_'+type+'.json'
     
 class complex_cache:
     def __init__(self, size, type): # the number of items
@@ -66,19 +65,28 @@ def reformat(indata, type):
 # repos: 40,264
 # layers: 829,202
 
-def run_sim(requests, type):
+def run_sim(requests, type, portion):
+    num_layers = {10: 194007,
+                  25: 267151,
+                  50: 339813,
+                  75: 394729,
+                  100: 450944
+                  }
     t = time.time()
        
-    size1 = int(num_usrs * 0.05)
-    size2 = int(num_usrs * 0.1)
-    size3 = int(num_usrs * 0.15)
-    size4 = int(num_usrs * 0.2)
+    # we are considering an individual layer size to be 1 unit.
+    size1 = int(num_layers[portion] * 0.05)
+    size2 = int(num_layers[portion] * 0.1)
+    size3 = int(num_layers[portion] * 0.15)
+    size4 = int(num_layers[portion] * 0.2)
+    size5 = int(num_layers[portion] * 0.3)
     
     caches = []
     caches.append(complex_cache(size1, type))
     caches.append(complex_cache(size2, type))
     caches.append(complex_cache(size3, type))
     caches.append(complex_cache(size4, type))
+    caches.append(complex_cache(size5, type))
     
     i = 0
     count = 10
@@ -107,11 +115,13 @@ def run_sim(requests, type):
             hit_ratio_each_hr[str(hr_no) + ' 10% hit ratio'] = caches[1].hits/caches[1].reqs
             hit_ratio_each_hr[str(hr_no) + ' 15% hit ratio'] = caches[2].hits/caches[2].reqs
             hit_ratio_each_hr[str(hr_no) + ' 20% hit ratio'] = caches[3].hits/caches[3].reqs
+            hit_ratio_each_hr[str(hr_no) + ' 30% hit ratio'] = caches[4].hits/caches[4].reqs
             
             print "5% hit ratio"+str(hit_ratio_each_hr[str(hr_no) + ' 5% hit ratio'])
             print "10% hit ratio"+str(hit_ratio_each_hr[str(hr_no) + ' 10% hit ratio'])
             print "15% hit ratio"+str(hit_ratio_each_hr[str(hr_no) + ' 15% hit ratio'])
             print "20% hit ratio"+str(hit_ratio_each_hr[str(hr_no) + ' 20% hit ratio'])
+            print "30% hit ratio"+str(hit_ratio_each_hr[str(hr_no) + ' 30% hit ratio'])
                 
         if 1.*i / len(requests) > 0.1:
             i = 0
@@ -119,18 +129,31 @@ def run_sim(requests, type):
             count += 10
         i += 1
 
-    return hit_ratio_each_hr
+    total_hit_ratio = {"5% cache": caches[0].hits/caches[0].reqs,
+                       "10% cache": caches[1].hits/caches[1].reqs,
+                       "15% cache": caches[2].hits/caches[2].reqs,
+                       "20% cache": caches[3].hits/caches[3].reqs,
+                       "30% cache": caches[4].hits/caches[4].reqs,
+                       }
+
+    return hit_ratio_each_hr, total_hit_ratio
 
 
-def init(data):
+def init(data, portion=100):
 
     print 'running cache simulation for: '+type
     #print data
+    outputfile = 'hit_ratio_'+type+'_'+str(portion)+'_percent'+'.json'
     parsed_data = reformat(data, type)
-    info = run_sim(parsed_data, type)
+    info, total_hit_ratio = run_sim(parsed_data, type, portion)
     
     with open(outputfile, 'w') as fp:
         json.dump(info, fp)
+
+    with open("LRU_total_hit_ratios.json", 'a') as fp:
+        fp.write(str(portion)+"% trace\n")
+        json.dump(total_hit_ratio, fp)
+        fp.write("\n\n")
 
 #     for thing in info:
 #         print thing + ': ' + str(info[thing])

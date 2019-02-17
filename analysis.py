@@ -696,6 +696,7 @@ def main():
     parser = ArgumentParser(description='Trace Player, allows for anonymized traces to be replayed to a registry, or for caching and prefecting simulations.')
     parser.add_argument('-i', '--input', dest='input', type=str, required=True, help = 'Input YAML configuration file, should contain all the inputs requried for processing')
     parser.add_argument('-c', '--command', dest='command', type=str, required=True, help= 'Trace player command. Possible commands: warmup, run, simulate, warmup is used to populate the registry with the layers of the trace, run replays the trace, and simulate is used to test different caching and prefecting policies.')
+    parser.add_argument('-p', '--portion', dest='portion', type=str, required=True, help= 'Portion of the trace on which to run the simulation. Choose one of: 10, 25, 50, 75, 100. Only to be used with the simulate commnand. If this flag is not passed, it will default to the whole 100% of the trace')
 
     args = parser.parse_args()
     
@@ -737,10 +738,22 @@ def main():
 #         pi = inputs['simulate']['name']
 #         if '.py' in pi:
 #             pi = pi[:-3]
-        with open(os.path.join(input_dir, 'total_trace.json'), 'r') as fp:
-            json_data = json.load(fp)
-        
-        pi = 'prefetch_old' #'cache_usr_repo_layer'
+        portion_files = {'10': 'total_trace_10_percent.json',
+                         '25': 'total_trace_10_percent.json',
+                         '50': 'total_trace_10_percent.json',
+                         '75': 'total_trace_10_percent.json',
+                         }
+        if args.portion in portion_files.keys():
+            with open(os.path.join(input_dir, portion_files[args.portion]), 'r') as fp:
+                print("you chose well")
+                json_data = json.load(fp)
+        elif args.portion == '100' or args.portion == None:
+            with open(os.path.join(input_dir, 'total_trace.json'), 'r') as fp:
+                json_data = json.load(fp)
+        else:
+            print("you chose poorly")
+            exit()
+        pi = 'cache_usr_repo_layer' #'prefetch_old'
         try:
             plugin = importlib.import_module(pi)
         except Exception as inst:
@@ -748,11 +761,15 @@ def main():
             print inst
             exit(1)
         try:
-            plugin.init(json_data)
+            # normally, there should be no second arg. This is a special case for LRU and
+            # running it on only portions of the trace.
+            # plugin.init(json_data)
+            plugin.init(json_data, portion=int(args.portion))
         except Exception as inst:
             print 'Error running plugin init!'
             print inst
             print traceback.print_exc()
+            
 
 if __name__ == "__main__":
     main()
