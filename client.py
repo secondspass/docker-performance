@@ -1,6 +1,7 @@
 from bottle import route, run, request, static_file, Bottle, response
 import hash_ring
 import sys, getopt
+import yaml
 import os
 import requests
 import json
@@ -230,10 +231,12 @@ def sen():
   
 def main():
     ip = "0.0.0.0"
+    registries = []
                 
     parser = ArgumentParser(description='registry-helper, helping registry to do a global dedup or slimmer ops.')
     parser.add_argument('-i', '--input', dest='input', type=str, required=True, help = 'Input YAML configuration file, should contain all the inputs requried for processing')
     parser.add_argument('-c', '--command', dest='command', type=str, required=False, help= 'registry-helper command. Possible commands: TestGloablDedup, etc,.')
+    parser.add_argument('-p', '--port', dest='port', type=str, required=False, help= 'Port client will use')
 
     args = parser.parse_args()
     
@@ -255,7 +258,10 @@ def main():
     if 'registry' in inputs:
         registries.extend(inputs['registry'])
 
-    if 'port' not in inputs['client_info']:
+    if args.port is not None:
+        port = args.port
+        print port
+    elif 'port' not in inputs['client_info']:
         if verbose:
             print 'master server port not specified, assuming 8080'
             port = 8082
@@ -276,7 +282,7 @@ def main():
         redis_host = inputs['redis']['host']
         redis_port = inputs['redis']['port']
         if verbose:
-            print 'redis: host:'+redis_host+',port:'+redis_port
+            print 'redis: host:'+str(redis_host)+',port:'+str(redis_port)
             
 #     rj = rejson.Client(host=redis_host, port=redis_port)
     rjpool_dbNoBFRecipe = redis.ConnectionPool(host = redis_host, port = redis_port, db = dbNoBFRecipe)
