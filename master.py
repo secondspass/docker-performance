@@ -14,6 +14,7 @@ from dxf import *
 from multiprocessing import Process, Queue
 import importlib
 import hash_ring
+from buildtools import process
 
 ## get requests
 def send_request_get(client, payload):
@@ -50,20 +51,37 @@ def send_warmup_thread(requests, q, registry, generate_random):
 #     os.remove(str(os.getpid()))
     q.put(trace)
 
-def warmup(data, out_trace, registry, threads, generate_random):
+#######################
+# send to registries according to cht 
+# warmup output file is <uri to dgst > map table
+#######################
+
+def warmup(data, out_trace, registries, threads, numclients):
     trace = {}
     processes = []
     q = Queue()
     process_data = []
+    # nannan
+    ring = hash_ring.HashRing(registries)
+    
     for i in range(threads):
         process_data.append([])
     i = 0
     for request in data:
         if request['method'] == 'GET':
-            process_data[i % threads].append(request)
+            #process_data[i % threads].append(request)
+#             organized[ring.get_node(r['client'])].append(request)
+            # process_data 1 = registry [0]
+            uri = request['uri']
+            layer_id = uri.split('/')[-1]
+            registry_tmp = ring.get_node(layer_id) # which registry should store this layer/manifest?
+            idx = registries.index(registry_tmp)
+            process_data[idx].append(request)
+            print "layer: "+layer_id+"goest to registry: "+registry_tmp+", idx:"+str(idx)
             i += 1
     for i in range(threads):
-        p = Process(target=send_warmup_thread, args=(process_data[i], q, registry, generate_random))
+        registry = registries[i]
+        p = Process(target=send_warmup_thread, args=(process_data[i], q, registry))
         processes.append(p)
 
     for p in processes:
@@ -250,6 +268,7 @@ def absoluteFilePaths(directory):
 
 ####
 # Random match
+# the output file is the last trace filename-realblob.json, which is total trace file.
 ####
 
 def match(realblob_locations, trace_files):
@@ -358,7 +377,7 @@ def organize(requests, out_trace, numclients, client_threads, port, wait, regist
         if r['uri'] in blob:
             b = blob[r['uri']]
             if b != 'bad':
-                request['blob'] = b
+                request['blob'] = b # dgest
                 request['method'] = 'GET'
                 if round_robin is True:
                     organized[i % numclients].append(request)
@@ -481,7 +500,8 @@ def main():
             threads = 1
         if verbose:
             print 'warmup threads: ' + str(threads)
-        warmup(json_data, interm, registries[0], threads, generate_random)
+            # NANNAN: not sure why only warmup a single registry, let's warmup all.
+        warmup(json_data, interm, registries, threads, generate_random)
 
     elif args.command == 'run':
         if verbose:

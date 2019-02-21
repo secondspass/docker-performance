@@ -28,6 +28,13 @@ trace: # mandatory field
 
     output: results.json # only used in run mode, produced output trace with latencies
 
+registry-helpers:
+    port: 8082
+    
+redis:
+    host: 
+    port:
+    
 registry:
     - hulk0:5000 # at least one registry required for run and warmup mode
 
