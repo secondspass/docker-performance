@@ -27,23 +27,20 @@ dbNoBFRecipe = 2
 ##
 # NANNAN: fetch the serverips from redis by using layer digest
 ##
-def pull_from_registry(wait, dgst, registry_q, startTime, pull_rsp_q):
+def pull_from_registry(wait, dgst, registry_q, startTime, onTime_q):
     while True:
-        results = []
         registry_tmp = registry_q.get()
+        
+        results = []
+        size = 0
+        t = 0
+        t = time.time()
+        
+        
         if ":5000" not in registry_tmp:
             registry_tmp = registry_tmp+":5000"
         print "layer/manifest: "+dgst+"goest to registry: "+registry_tmp
-        
-        size = 0
-        t = 0
-        onTime = 'no'
-        start = startTime + r['delay']
-        now = time.time()
-        if start > now and wait is True:
-            onTime = 'yes'
-            time.sleep(start - now)
-        t = time.time()
+        onTime = 'yes'
         dxf = DXF(registry_tmp, 'test_repo', insecure=True)
         try:
             for chunk in dxf.pull_blob(dgst, chunk_size=1024*1024):
@@ -53,10 +50,12 @@ def pull_from_registry(wait, dgst, registry_q, startTime, pull_rsp_q):
                 onTime = 'yes: wrong digest'
             else:
                 onTime = 'failed: '+str(e)
-        t = time.time() - t
                 
-        results.append({'time': now, 'duration': t, 'onTime': onTime, 'size': size})   
-        pull_rsp_q.put(results)    
+        t = time.time() - t
+        
+        results.append({'size': size, 'onTime': onTime, 'duration': t})
+        
+        onTime_q.put(results)
 
 
 def redis_stat_bfrecipe_serverips(dgst):
@@ -99,15 +98,36 @@ def send_requests(wait, requests, startTime, q):
             
             threads = len(r['registry'])
             if not threads:
-                print 'destination registries for this blob is zero! ERROR!'
+                print 'destination registries for this blob is zero! ERROR!'            
+#             t = 0
+#             onTime = 'no'
+#             start = startTime + r['delay']
+
+            onTime_q = Queue()
+            now = time.time()
+            if start > now and wait is True:
+                onTime = 'yes'
+                time.sleep(start - now)
+            t = time.time()
 
             for i in range(threads):
-                p = Process(target=pull_from_registry, args=(wait, dgst, registry_q, startTime, q))
+                p = Process(target=pull_from_registry, args=(wait, dgst, registry_q, startTime, onTime_q))
                 p.start()
                 processes.append(p)
                 
             for p in processes:
                 p.join()
+                
+            t = time.time() - t
+            
+            onTime_l = list(onTime_q.queue)
+#             onTime_l = []
+#             for i in range(threads):
+#                 onTime_l.extend(onTime_q.get())
+                
+            results.append({'time': now, 'duration': t, 'onTime': onTime_l})   #, 'size': size
+            pull_rsp_q.put(results)   
+        
             print 'processes joined, send requests continuing'
         else:                  
             size = r['size']
