@@ -1,10 +1,10 @@
 # excample configuration file for trace player
 client_info: # Required for run command
     client_list:
-        - localhost:8081
+        - localhost:8096
         - 192.168.0.152:8081
-        - 192.168.0.153:8081
-        - 192.168.0.154:8081
+        # - 192.168.0.153:8081
+        # - 192.168.0.154:8081
         # - client instance and port
     port: 8080 # master's server port needed for clients to send inforamtion back
     threads: 100 # number of threads per client node, each thread is a process that sends requests
@@ -32,11 +32,12 @@ registry-helpers:
     port: 8082
     
 redis:
-    host: 
-    port:
+    host: 192.168.0.170 #hulk0
+    port: 6379
     
 registry:
     - hulk0:5000 # at least one registry required for run and warmup mode
+    - hulk1:5000
 
 warmup: # required for run and warmup mode
     output: interm.json # name of file that holds mapping between trace uri's and hashes

@@ -1,4 +1,5 @@
 from bottle import route, run, request, static_file, Bottle, response
+import hash_ring
 import sys, getopt
 import os
 import requests
