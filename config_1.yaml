@@ -21,10 +21,163 @@ trace: # mandatory field
     location: /home/nannan/dockerimages/docker-traces/data_centers/dal09/  #/home/michaellittley/data_centers/dal09 # current directory assumed if field not present
     traces:
         - prod-dal09-logstash-2017.08.01-0.json # at least one trace required
+        - prod-dal09-logstash-2017.06.20-1.json
+        - prod-dal09-logstash-2017.06.20-2.json
+        - prod-dal09-logstash-2017.06.20-3.json
+        - prod-dal09-logstash-2017.06.21-0.json
+        - prod-dal09-logstash-2017.06.21-1.json
+        - prod-dal09-logstash-2017.06.21-2.json
+        - prod-dal09-logstash-2017.06.21-3.json
+        - prod-dal09-logstash-2017.06.22-0.json
+        - prod-dal09-logstash-2017.06.22-1.json
+        - prod-dal09-logstash-2017.06.22-2.json
+        - prod-dal09-logstash-2017.06.22-3.json
+        - prod-dal09-logstash-2017.06.23-0.json
+        - prod-dal09-logstash-2017.06.23-1.json
+        - prod-dal09-logstash-2017.06.23-2.json
+        - prod-dal09-logstash-2017.06.23-3.json
+        - prod-dal09-logstash-2017.06.24-0.json
+        - prod-dal09-logstash-2017.06.24-1.json
+        - prod-dal09-logstash-2017.06.24-2.json
+        - prod-dal09-logstash-2017.06.24-3.json
+        - prod-dal09-logstash-2017.06.25-0.json
+        - prod-dal09-logstash-2017.06.25-1.json
+        - prod-dal09-logstash-2017.06.25-2.json
+        - prod-dal09-logstash-2017.06.25-3.json
+        - prod-dal09-logstash-2017.06.26-0.json
+        - prod-dal09-logstash-2017.06.26-1.json
+        - prod-dal09-logstash-2017.06.26-2.json
+        - prod-dal09-logstash-2017.06.26-3.json
+        - prod-dal09-logstash-2017.06.27-0.json
+        - prod-dal09-logstash-2017.06.27-1.json
+        - prod-dal09-logstash-2017.06.27-2.json
+        - prod-dal09-logstash-2017.06.27-3.json
+        - prod-dal09-logstash-2017.06.28-0.json
+        - prod-dal09-logstash-2017.06.28-1.json
+        - prod-dal09-logstash-2017.06.28-2.json
+        - prod-dal09-logstash-2017.06.28-3.json
+        - prod-dal09-logstash-2017.06.29-0.json
+        - prod-dal09-logstash-2017.06.29-1.json
+        - prod-dal09-logstash-2017.06.29-2.json
+        - prod-dal09-logstash-2017.06.29-3.json
+        - prod-dal09-logstash-2017.06.30-0.json
+        - prod-dal09-logstash-2017.06.30-1.json
+        - prod-dal09-logstash-2017.06.30-2.json
+        - prod-dal09-logstash-2017.06.30-3.json
+        - prod-dal09-logstash-2017.07.01-0.json
+        - prod-dal09-logstash-2017.07.01-1.json
+        - prod-dal09-logstash-2017.07.01-2.json
+        - prod-dal09-logstash-2017.07.01-3.json
+        - prod-dal09-logstash-2017.07.02-0.json
+        - prod-dal09-logstash-2017.07.02-1.json
+        - prod-dal09-logstash-2017.07.02-2.json
+        - prod-dal09-logstash-2017.07.02-3.json
+        - prod-dal09-logstash-2017.07.03-0.json
+        - prod-dal09-logstash-2017.07.03-1.json
+        - prod-dal09-logstash-2017.07.03-2.json
+        - prod-dal09-logstash-2017.07.03-3.json
+        - prod-dal09-logstash-2017.07.04-0.json
+        - prod-dal09-logstash-2017.07.04-1.json
+        - prod-dal09-logstash-2017.07.04-2.json
+        - prod-dal09-logstash-2017.07.04-3.json
+        - prod-dal09-logstash-2017.07.05-0.json
+        - prod-dal09-logstash-2017.07.05-1.json
+        - prod-dal09-logstash-2017.07.05-2.json
+        - prod-dal09-logstash-2017.07.05-3.json
+        - prod-dal09-logstash-2017.07.06-0.json
+        - prod-dal09-logstash-2017.07.06-1.json
+        - prod-dal09-logstash-2017.07.06-2.json
+        - prod-dal09-logstash-2017.07.06-3.json
+        - prod-dal09-logstash-2017.07.07-0.json
+        - prod-dal09-logstash-2017.07.07-1.json
+        - prod-dal09-logstash-2017.07.07-2.json
+        - prod-dal09-logstash-2017.07.07-3.json
+        - prod-dal09-logstash-2017.07.08-0.json
+        - prod-dal09-logstash-2017.07.08-1.json
+        - prod-dal09-logstash-2017.07.08-2.json
+        - prod-dal09-logstash-2017.07.08-3.json
+        - prod-dal09-logstash-2017.07.09-0.json
+        - prod-dal09-logstash-2017.07.09-1.json
+        - prod-dal09-logstash-2017.07.09-2.json
+        - prod-dal09-logstash-2017.07.09-3.json
+        - prod-dal09-logstash-2017.07.10-0.json
+        - prod-dal09-logstash-2017.07.10-1.json
+        - prod-dal09-logstash-2017.07.10-2.json
+        - prod-dal09-logstash-2017.07.11-0.json
+        - prod-dal09-logstash-2017.07.11-1.json
+        - prod-dal09-logstash-2017.07.11-2.json
+        - prod-dal09-logstash-2017.07.11-3.json
+        - prod-dal09-logstash-2017.07.12-0.json
+        - prod-dal09-logstash-2017.07.12-1.json
+        - prod-dal09-logstash-2017.07.12-2.json
+        - prod-dal09-logstash-2017.07.12-3.json
+        - prod-dal09-logstash-2017.07.13-0.json
+        - prod-dal09-logstash-2017.07.13-1.json
+        - prod-dal09-logstash-2017.07.13-2.json
+        - prod-dal09-logstash-2017.07.13-3.json
+        # - prod-dal09-logstash-2017.07.14-0.json
+        # - prod-dal09-logstash-2017.07.14-1.json
+        # - prod-dal09-logstash-2017.07.14-2.json
+        # - prod-dal09-logstash-2017.07.14-3.json
+        # - prod-dal09-logstash-2017.07.15-0.json
+        # - prod-dal09-logstash-2017.07.15-1.json
+        # - prod-dal09-logstash-2017.07.15-2.json
+        # - prod-dal09-logstash-2017.07.15-3.json
+        # - prod-dal09-logstash-2017.07.16-0.json
+        # - prod-dal09-logstash-2017.07.16-1.json
+        # - prod-dal09-logstash-2017.07.16-2.json
+        # - prod-dal09-logstash-2017.07.16-3.json
+        # - prod-dal09-logstash-2017.07.17-0.json
+        # - prod-dal09-logstash-2017.07.17-1.json
+        # - prod-dal09-logstash-2017.07.17-2.json
+        # - prod-dal09-logstash-2017.07.17-3.json
+        # - prod-dal09-logstash-2017.07.18-0.json
+        # - prod-dal09-logstash-2017.07.18-1.json
+        # - prod-dal09-logstash-2017.07.18-2.json
+        # - prod-dal09-logstash-2017.07.18-3.json
+        # - prod-dal09-logstash-2017.07.19-0.json
+        # - prod-dal09-logstash-2017.07.19-1.json
+        # - prod-dal09-logstash-2017.07.19-2.json
+        # - prod-dal09-logstash-2017.07.19-3.json
+        # - prod-dal09-logstash-2017.07.20-0.json
+        # - prod-dal09-logstash-2017.07.20-1.json
+        # - prod-dal09-logstash-2017.07.20-2.json
+        # - prod-dal09-logstash-2017.07.20-3.json
+        # - prod-dal09-logstash-2017.07.21-0.json
+        # - prod-dal09-logstash-2017.07.21-1.json
+        # - prod-dal09-logstash-2017.07.21-2.json
+        # - prod-dal09-logstash-2017.07.21-3.json
+        # - prod-dal09-logstash-2017.07.22-0.json
+        # - prod-dal09-logstash-2017.07.22-1.json
+        # - prod-dal09-logstash-2017.07.22-2.json
+        # - prod-dal09-logstash-2017.07.22-3.json
+        # - prod-dal09-logstash-2017.07.23-0.json
+        # - prod-dal09-logstash-2017.07.23-1.json
+        # - prod-dal09-logstash-2017.07.23-2.json
+        # - prod-dal09-logstash-2017.07.23-3.json
+        # - prod-dal09-logstash-2017.07.24-0.json
+        # - prod-dal09-logstash-2017.07.24-1.json
+        # - prod-dal09-logstash-2017.07.24-2.json
+        # - prod-dal09-logstash-2017.07.24-3.json
+        # - prod-dal09-logstash-2017.07.25-0.json
+        # - prod-dal09-logstash-2017.07.25-1.json
+        # - prod-dal09-logstash-2017.07.25-2.json
+        # - prod-dal09-logstash-2017.07.25-3.json
+        # - prod-dal09-logstash-2017.07.26-0.json
+        # - prod-dal09-logstash-2017.07.26-1.json
+        # - prod-dal09-logstash-2017.07.26-2.json
+        # - prod-dal09-logstash-2017.07.26-3.json
+        # - prod-dal09-logstash-2017.07.27-0.json
+        # - prod-dal09-logstash-2017.07.27-1.json
+        # - prod-dal09-logstash-2017.07.27-2.json
+        # - prod-dal09-logstash-2017.07.27-3.json
+        # - prod-dal09-logstash-2017.07.28-0.json
+        # - prod-dal09-logstash-2017.07.28-1.json
+
     # entire trace used if limit not speciiied
     limit: 
         type: requests # seconds and requests are supported
-        amount: 100
+        amount: 600
 
     output: results.json # only used in run mode, produced output trace with latencies
 
