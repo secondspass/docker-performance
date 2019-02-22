@@ -98,7 +98,7 @@ def send_requests(wait, requests, startTime, q):
         if r['method'] == 'GET':
             registries.extend(get_request_registries(r)) 
             
-            threads = len(r['registry'])
+            threads = len(registries)
             if not threads:
                 print 'destination registries for this blob is zero! ERROR!'            
 #             t = 0
@@ -138,7 +138,8 @@ def send_requests(wait, requests, startTime, q):
                 if start > now and wait is True:
                     time.sleep(start - now)
                 now = time.time()
-                registry_tmp = r['registry'][0]
+                registries.extend(get_request_registries(r)) 
+                registry_tmp = registries[0]
                 dxf = DXF(registry_tmp, 'test_repo', insecure=True)
                 try:
                     dgst = dxf.push_blob(r['data'])#fname
@@ -151,7 +152,7 @@ def send_requests(wait, requests, startTime, q):
  
                 t = time.time() - now
  
-    results.append({'time': now, 'duration': t, 'onTime': onTime, 'size': size})
+                results.append({'time': now, 'duration': t, 'onTime': onTime, 'size': size})
     q.put(results)
 
 ################################
