@@ -5,6 +5,7 @@ from argparse import ArgumentParser
 import requests
 import time
 import datetime
+import pdb
 import random
 import threading
 import multiprocessing
@@ -14,7 +15,7 @@ from dxf import *
 from multiprocessing import Process, Queue
 import importlib
 import hash_ring
-from buildtools import process
+# from buildtools import process
 
 ## get requests
 def send_request_get(client, payload):
@@ -23,7 +24,7 @@ def send_request_get(client, payload):
     headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
     s.post("http://" + str(client) + "/up", data=json.dumps(payload), headers=headers, timeout=100)
 
-def send_warmup_thread(requests, q, registry, generate_random):
+def send_warmup_thread(requests, q, registry):
     trace = {}
     dxf = DXF(registry, 'test_repo', insecure=True)
 #     f = open(str(os.getpid()), 'wb')
@@ -76,13 +77,14 @@ def warmup(data, out_trace, registries, threads, numclients):
             layer_id = uri.split('/')[-1]
             registry_tmp = ring.get_node(layer_id) # which registry should store this layer/manifest?
             idx = registries.index(registry_tmp)
-            process_data[idx].append(request)
+            process_data[(idx+(len(registries)*i))%threads].append(request)
             print "layer: "+layer_id+"goest to registry: "+registry_tmp+", idx:"+str(idx)
             i += 1
-    for i in range(threads):
-        registry = registries[i]
-        p = Process(target=send_warmup_thread, args=(process_data[i], q, registry))
-        processes.append(p)
+
+    for regidx in range(len(registries)):
+        for i in range(0, threads, len(registries)):
+            p = Process(target=send_warmup_thread, args=(process_data[regidx+i], q, registries[regidx]))
+            processes.append(p)
 
     for p in processes:
         p.start()
