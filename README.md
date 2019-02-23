@@ -4,6 +4,8 @@
 * third, `warmup` the registry before issues requests. so that all the get requests will pull realblobs from registry. the output file from warmup is a dictionary <request'uri to a blob digest> called `interm.json`
 * fourth, `run`
 
+# config files:
+* warmup threads = N*len(registries)
 
 
 
