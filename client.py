@@ -37,8 +37,7 @@ def pull_from_registry(wait, dgst, registry_q, startTime, onTime_q):
         size = 0
         t = 0
         t = time.time()
-        
-        
+             
         if ":5000" not in registry_tmp:
             registry_tmp = registry_tmp+":5000"
         print "layer/manifest: "+dgst+"goest to registry: "+registry_tmp
@@ -101,9 +100,6 @@ def send_requests(wait, requests, startTime, q):
             threads = len(registries)
             if not threads:
                 print 'destination registries for this blob is zero! ERROR!'            
-#             t = 0
-#             onTime = 'no'
-#             start = startTime + r['delay']
 
             onTime_q = Queue()
             now = time.time()
@@ -123,9 +119,6 @@ def send_requests(wait, requests, startTime, q):
             t = time.time() - t
             
             onTime_l = list(onTime_q.queue)
-#             onTime_l = []
-#             for i in range(threads):
-#                 onTime_l.extend(onTime_q.get())
                 
             results.append({'time': now, 'duration': t, 'onTime': onTime_l})   #, 'size': size
             pull_rsp_q.put(results)   
@@ -144,7 +137,6 @@ def send_requests(wait, requests, startTime, q):
                 try:
                     dgst = dxf.push_blob(r['data'])#fname
                 except Exception as e:
-#                     onTime = 'failed: '+str(e)
                     if "expected digest sha256:" in str(e):
                         onTime = 'yes: wrong digest'
                     else:
@@ -236,8 +228,7 @@ def main():
                 
     parser = ArgumentParser(description='registry-helper, helping registry to do a global dedup or slimmer ops.')
     parser.add_argument('-i', '--input', dest='input', type=str, required=True, help = 'Input YAML configuration file, should contain all the inputs requried for processing')
-    parser.add_argument('-c', '--command', dest='command', type=str, required=False, help= 'registry-helper command. Possible commands: TestGloablDedup, etc,.')
-    parser.add_argument('-p', '--port', dest='port', type=str, required=False, help= 'Port client will use')
+    parser.add_argument('-c', '--command', dest='command', type=str, required=False, help= 'registry-testing command. Possible commands: TestGloablDedup, etc,.')
 
     args = parser.parse_args()
     
@@ -264,7 +255,7 @@ def main():
         print port
     elif 'port' not in inputs['client_info']:
         if verbose:
-            print 'master server port not specified, assuming 8080'
+            print 'master server port not specified, assuming 8082'
             port = 8082
     else:
         port = inputs['client_info']['port']
@@ -288,7 +279,6 @@ def main():
 #     rj = rejson.Client(host=redis_host, port=redis_port)
     rjpool_dbNoBFRecipe = redis.ConnectionPool(host = redis_host, port = redis_port, db = dbNoBFRecipe)
     rj_dbNoBFRecipe = redis.Redis(connection_pool=rjpool_dbNoBFRecipe)  
-    
     
     ring = hash_ring.HashRing(registries)             
     
