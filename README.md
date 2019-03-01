@@ -1,3 +1,14 @@
+# How to run?
+* first, setup config yaml file. Note that, we combine all traces into one big trace file `total_trace_registryname.json` and add `total_trace_registryname.json` to config file field: `traces: `. for location, we use `/home/nannan/dockerimages/docker-traces/data_centers/`. Remeber to cp the big trace file in the above location.
+* second, `match` the trace files' requests to our realblob dataset. So that each request will send a realblob or get a realblob to or from registry. In the end, `match` will generate `total_trace_registryname-realblob.json`, which is the trace file we are going to replay next and our code will automatically pickup this file.
+* third, `warmup` the registry before issues requests. so that all the get requests will pull realblobs from registry. the output file from warmup is a dictionary <request'uri to a blob digest> called `interm.json`
+* fourth, `run`
+
+# config files:
+* warmup threads = N*len(registries)
+
+
+
 # Docker Registry Trace Player
 
 The Docker registry trace player is used to replay anonimized production level traces for a registry, available in the traces directory.
