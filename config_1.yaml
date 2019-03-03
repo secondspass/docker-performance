@@ -1,12 +1,12 @@
 # excample configuration file for trace player
 client_info: # Required for run command
-    client_list:
+    client_list: # the list of clients read by master
         - localhost:8096
-        - 192.168.0.152:8081
+        - 192.168.0.153:8081
         # - 192.168.0.153:8081
         # - 192.168.0.154:8081
         # - client instance and port
-    port: 8080 # master's server port needed for clients to send inforamtion back
+    port: 8096 # the client's port when using this config file with the client
     threads: 100 # number of threads per client node, each thread is a process that sends requests
     wait: true # Determines if clients should wait the relative amount of time in trace before sending request
     route: true # Tells the master to forward based on hashing on client urls rather than round robin
@@ -18,15 +18,16 @@ client_info: # Required for run command
 verbose: true # optional input
 
 trace: # mandatory field
-    location: /home/nannan/dockerimages/docker-traces/data_centers/dal09/  #/home/michaellittley/data_centers/dal09 # current directory assumed if field not present
+    location: /home/nannan/dockerimages/docker-traces/data_centers/  #/home/michaellittley/data_centers/dal09 # current directory assumed if field not present
     traces:
-        - prod-dal09-logstash-2017.08.01-0.json # at least one trace required
-        - prod-dal09-logstash-2017.06.20-1.json
-        - prod-dal09-logstash-2017.06.20-2.json
-        - prod-dal09-logstash-2017.06.20-3.json
-        - prod-dal09-logstash-2017.06.21-0.json
-        - prod-dal09-logstash-2017.06.21-1.json
-        - prod-dal09-logstash-2017.06.21-2.json
+        - total_trace_dal09.json
+        # - prod-dal09-logstash-2017.08.01-0.json # at least one trace required
+        # - prod-dal09-logstash-2017.06.20-1.json
+        # - prod-dal09-logstash-2017.06.20-2.json
+        # - prod-dal09-logstash-2017.06.20-3.json
+        # - prod-dal09-logstash-2017.06.21-0.json
+        # - prod-dal09-logstash-2017.06.21-1.json
+        # - prod-dal09-logstash-2017.06.21-2.json
         # - prod-dal09-logstash-2017.06.21-3.json
         # - prod-dal09-logstash-2017.06.22-0.json
         # - prod-dal09-logstash-2017.06.22-1.json
@@ -177,7 +178,7 @@ trace: # mandatory field
     # entire trace used if limit not speciiied
     limit: 
         type: requests # seconds and requests are supported
-        amount: 600
+        amount: 1000
 
     output: results.json # only used in run mode, produced output trace with latencies
 
@@ -185,12 +186,16 @@ registry-helpers:
     port: 8082
     
 redis:
-    host: 192.168.0.170 #hulk0
+    host: 192.168.0.218 #thor18
     port: 6379
     
 registry:
-    - hulk0:5000 # at least one registry required for run and warmup mode
-    - hulk1:5000
+  # thor13,14,15,16,17
+    - 192.168.0.213:5000 # at least one registry required for run and warmup mode
+    - 192.168.0.214:5000
+    # - 192.168.0.215:5000 
+    # - 192.168.0.216:5000 
+    # - 192.168.0.217:5000 
 
 warmup: # required for run and warmup mode
     output: interm.json # name of file that holds mapping between trace uri's and hashes

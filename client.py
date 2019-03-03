@@ -250,12 +250,9 @@ def main():
     if 'registry' in inputs:
         registries.extend(inputs['registry'])
 
-    if args.port is not None:
-        port = args.port
-        print port
-    elif 'port' not in inputs['client_info']:
+    if 'port' not in inputs['client_info']:
         if verbose:
-            print 'master server port not specified, assuming 8082'
+            print 'client port not specified, assuming 8082'
             port = 8082
     else:
         port = inputs['client_info']['port']
